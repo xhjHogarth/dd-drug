@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhj.dddrug.dao.DrugMapper">
+    <select id="selectProteins" parameterType="String" resultType="String">
+        select pname from proteins where gene_symbol in (select pname from drug_protein where dname=#{drugname})
+    </select>
+    <select id="selectMetabolites" parameterType="String" resultType="String">
+        select mname from enzyme_metabolites where ename in
+        (select DISTINCT pname from protein_enzyme where pname in (select pname from  drug_protein where dname=#{drugname})
+        or pname_e in (select pname from  drug_protein where dname=#{drugname})) or ename in
+        (select DISTINCT pname_e from protein_enzyme where pname_e in (select pname from  drug_protein where dname=#{drugname})
+        or pname in (select pname from  drug_protein where dname=#{drugname}))
+    </select>
+    <select id="selectReference" parameterType="String" resultType="String">
+        select pmid from drug_reference where dname=#{drugname}
+    </select>
+</mapper>

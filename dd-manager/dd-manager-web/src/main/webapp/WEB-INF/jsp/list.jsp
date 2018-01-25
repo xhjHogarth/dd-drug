@@ -30,9 +30,9 @@
                 <tr>
                     <td>${protein.id}</td>
                     <td>${protein.pname}</td>
-                    <td>${protein.gname}</td>
-                    <td><a href="http://www.uniprot.org/uniprot/${protein.ac_number}">${protein.ac_number}</a></td>
-                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${protein.eg_id}">${protein.eg_id}</a></td>
+                    <td>${protein.gene_symbol}</td>
+                    <td><a href="http://www.uniprot.org/uniprot/${protein.eg_id}">${protein.eg_id}</a></td>
+                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${protein.upkb}">${protein.upkb}</a></td>
                 </tr>
             </c:forEach>
             <tr>

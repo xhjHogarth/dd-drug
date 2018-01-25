@@ -9,16 +9,16 @@ package com.xhj.dddrug.pojo;
 public class Protein {
     private int pid;
     private String pname;
-    private String gname;
-    private String ac_number;
+    private String gene_symbol;
+    private String upkb;
     private String eg_id;
+    private String typename;
 
-
-    public int getId() {
+    public int getPid() {
         return pid;
     }
 
-    public void setId(int pid) {
+    public void setPid(int pid) {
         this.pid = pid;
     }
 
@@ -30,20 +30,20 @@ public class Protein {
         this.pname = pname;
     }
 
-    public String getGname() {
-        return gname;
+    public String getGene_symbol() {
+        return gene_symbol;
     }
 
-    public void setGname(String gname) {
-        this.gname = gname;
+    public void setGene_symbol(String gene_symbol) {
+        this.gene_symbol = gene_symbol;
     }
 
-    public String getAc_number() {
-        return ac_number;
+    public String getUpkb() {
+        return upkb;
     }
 
-    public void setAc_number(String ac_number) {
-        this.ac_number = ac_number;
+    public void setUpkb(String upkb) {
+        this.upkb = upkb;
     }
 
     public String getEg_id() {
@@ -54,14 +54,23 @@ public class Protein {
         this.eg_id = eg_id;
     }
 
+    public String getType() {
+        return typename;
+    }
+
+    public void setType(String typename) {
+        this.typename = typename;
+    }
+
     @Override
     public String toString() {
         return "Protein{" +
                 "pid=" + pid +
                 ", pname='" + pname + '\'' +
-                ", gname='" + gname + '\'' +
-                ", ac_number='" + ac_number + '\'' +
+                ", gene_symbol='" + gene_symbol + '\'' +
+                ", upkb='" + upkb + '\'' +
                 ", eg_id='" + eg_id + '\'' +
+                ", typename='" + typename + '\'' +
                 '}';
     }
 }
