@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhj.dddrug.dao.ProteinMapper">
+    <select id="selectProteins" parameterType="int" resultType="com.xhj.dddrug.pojo.Protein">
+      select * from proteins limit #{pageNow},5
+    </select>
+
+    <select id="queryProteinCount" resultType="int">
+        select count(*) from proteins
+    </select>
+</mapper>
