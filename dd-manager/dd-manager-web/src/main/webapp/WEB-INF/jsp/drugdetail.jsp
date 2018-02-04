@@ -8,7 +8,7 @@
     <table border="1px" align="center" style="margin-top: 2%">
         <tr>
             <td align="center" width="100px">Drug Name</td>
-            <td width="300px"><a href="">${resultDrug.drugName}</a></td>
+            <td width="300px"><a href="https://www.drugbank.ca/drugs/${resultDrug.drugBank}">${resultDrug.drugName}</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: darksalmon" align="center">Related Proteins</td>
@@ -19,7 +19,7 @@
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="2"><a href="${pageContext.request.contextPath}/">(more......)</a></td>
+            <td colspan="2"><a href="${pageContext.request.contextPath}/listProtein.action?drugName=${resultDrug.drugName}">(more......)</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: darksalmon" align="center">Metabolites</td>

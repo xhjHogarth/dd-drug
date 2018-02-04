@@ -2,6 +2,7 @@ package com.xhj.dddrug.service;
 
 import com.xhj.dddrug.pojo.Protein;
 import com.xhj.dddrug.utils.PageBean;
+import com.xhj.dddrug.vo.QueryVo;
 
 /**
  * User: asus
@@ -11,5 +12,5 @@ import com.xhj.dddrug.utils.PageBean;
  */
 public interface ProteinService {
 
-    public PageBean<Protein> selectProteins(int pageNow);
+    public PageBean<Protein> selectProteins(QueryVo vo);
 }

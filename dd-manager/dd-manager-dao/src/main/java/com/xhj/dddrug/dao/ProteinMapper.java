@@ -1,8 +1,10 @@
 package com.xhj.dddrug.dao;
 
 import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.vo.QueryVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: asus
@@ -12,8 +14,12 @@ import java.util.List;
  */
 public interface ProteinMapper {
     //分页查询数据
-    public List<Protein> selectProteins(int pageNow);
+    public List<String> selectProteins(QueryVo vo);
 
+    List<String> selectProteinsByList(List<String> proteinsGeneSymbol);
+
+    List<Protein> selectProteinsByPage(Map<String,Object> proteinsAndVo);
     //总共有多少条数据
-    public int queryProteinCount();
+    public int queryProteinCount(List<String> data);
+
 }

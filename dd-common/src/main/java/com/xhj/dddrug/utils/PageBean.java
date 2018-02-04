@@ -14,6 +14,7 @@ public class PageBean<T> {
     private int pageSize;//每页多少条数据
     private int pageCount;//一共有多少页
     private int dataCount;//总共有多少条数据
+    private String serachKey;//查询条件
     private List<T> data;//这一页的具体数据
 
     public int getId() {
@@ -56,6 +57,14 @@ public class PageBean<T> {
         this.dataCount = dataCount;
     }
 
+    public String getSerachKey() {
+        return serachKey;
+    }
+
+    public void setSerachKey(String serachKey) {
+        this.serachKey = serachKey;
+    }
+
     public List<T> getData() {
         return data;
     }
@@ -67,10 +76,12 @@ public class PageBean<T> {
     @Override
     public String toString() {
         return "PageBean{" +
-                "pageNow=" + pageNow +
+                "id=" + id +
+                ", pageNow=" + pageNow +
                 ", pageSize=" + pageSize +
                 ", pageCount=" + pageCount +
                 ", dataCount=" + dataCount +
+                ", serachKey='" + serachKey + '\'' +
                 ", data=" + data +
                 '}';
     }

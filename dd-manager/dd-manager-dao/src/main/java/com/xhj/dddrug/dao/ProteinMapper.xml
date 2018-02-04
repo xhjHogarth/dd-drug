@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xhj.dddrug.dao.ProteinMapper">
-    <select id="selectProteins" parameterType="int" resultType="com.xhj.dddrug.pojo.Protein">
-      select * from proteins limit #{pageNow},5
+    <select id="selectProteins" parameterType="com.xhj.dddrug.vo.QueryVo" resultType="String">
+      select gene_symbol from proteins where gene_symbol in (select pname from drug_protein where dname=#{drugName})
     </select>
-
-    <select id="queryProteinCount" resultType="int">
-        select count(*) from proteins
+    <select id="selectProteinsByList" parameterType="List" resultType="String">
+        select gene_symbol from proteins where
+        gene_symbol in (select pname from protein_enzyme where (pname in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) or pname_e in (<foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
+        or gene_symbol in (select pname_e from protein_enzyme where (pname in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>) or pname_e in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
+    </select>
+    <select id="selectProteinsByPage" parameterType="java.util.HashMap" resultType="com.xhj.dddrug.pojo.Protein">
+        select * from proteins where gene_symbol in (
+        <foreach collection="proteinsGeneSymbol" separator="," item="item">#{item}</foreach>
+        ) limit #{vo.rowNumber},#{vo.pageSize}
+    </select>
+    <select id="queryProteinCount" parameterType="List" resultType="int">
+        select count(*) from proteins where gene_symbol in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
     </select>
 </mapper>

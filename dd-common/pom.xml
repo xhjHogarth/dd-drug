@@ -11,6 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dd-common</artifactId>
-
+    <dependencies>
+        <!-- Json处理工具包，Jackson  @ResponseBody mvc:annotation-driven-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -20,19 +20,19 @@
                 <td colspan="5" align="center">查询结果</td>
             </tr>
             <tr>
-                <td>Now.</td>
+                <td>Num.</td>
                 <td>Protein Name</td>
-                <td>Gene Name</td>
-                <td>AC Number</td>
-                <td>Entrez Gene ID</td>
+                <td>Gene Symbol</td>
+                <td>Entrez Gene</td>
+                <td>UniProKB</td>
             </tr>
             <c:forEach items="${pageBean.data}" var="protein" varStatus="vs">
                 <tr>
-                    <td>${protein.id}</td>
+                    <td>${protein.pid}</td>
                     <td>${protein.pname}</td>
                     <td>${protein.gene_symbol}</td>
-                    <td><a href="http://www.uniprot.org/uniprot/${protein.eg_id}">${protein.eg_id}</a></td>
-                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${protein.upkb}">${protein.upkb}</a></td>
+                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${protein.eg_id}">${protein.eg_id}</a></td>
+                    <td><a href="http://www.uniprot.org/uniprot/${protein.upkb}">${protein.upkb}</a></td>
                 </tr>
             </c:forEach>
             <tr>
@@ -52,6 +52,7 @@
                         <a href="">Next&gt;</a>&nbsp;&nbsp;
                     </c:if>
                     <input type="hidden" id="page" name="pageNow" value="${pageBean.pageNow}"/>
+                    <input type="hidden" id="page" name="drugName" value="${pageBean.serachKey}"/>
                     <a href="javascript:to_page(${pageBean.pageCount})">Last&gt;&gt;</a>
                 </td>
             </tr>

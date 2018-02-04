@@ -2,16 +2,99 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xhj.dddrug.dao.DrugMapper">
     <select id="selectProteins" parameterType="String" resultType="String">
-        select pname from proteins where gene_symbol in (select pname from drug_protein where dname=#{drugname})
+        select gene_symbol from proteins where gene_symbol in (select pname from drug_protein where dname=#{drugname})
     </select>
-    <select id="selectMetabolites" parameterType="String" resultType="String">
-        select mname from enzyme_metabolites where ename in
-        (select DISTINCT pname from protein_enzyme where pname in (select pname from  drug_protein where dname=#{drugname})
-        or pname_e in (select pname from  drug_protein where dname=#{drugname})) or ename in
-        (select DISTINCT pname_e from protein_enzyme where pname_e in (select pname from  drug_protein where dname=#{drugname})
-        or pname in (select pname from  drug_protein where dname=#{drugname}))
+    <select id="selectProteinsByList" parameterType="List" resultType="String">
+        select gene_symbol from proteins where
+        gene_symbol in (select pname from protein_enzyme where (pname in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) or pname_e in (<foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
+        or gene_symbol in (select pname_e from protein_enzyme where (pname in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>) or pname_e in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
+    </select>
+    <select id="selectProteinsPname" parameterType="List" resultType="String">
+        select pname from proteins where gene_symbol in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
+    </select>
+    <select id="selectMetabolites" parameterType="List" resultType="String">
+        <!--select DISTINCT mname from enzyme_metabolites where ename in-->
+        <!--(select pname from protein_enzyme where (pname in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--) or pname_e in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--)) and re_type=2)-->
+        <!--or ename in (select pname_e from protein_enzyme where (pname in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--) or pname_e in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--)) and re_type=2)-->
+        select DISTINCT mname from enzyme_metabolites where ename in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
     </select>
     <select id="selectReference" parameterType="String" resultType="String">
         select pmid from drug_reference where dname=#{drugname}
+    </select>
+    <select id="selectDrugBank" parameterType="String" resultType="String">
+        select drugbank from drugs where dname=#{drugName}
+    </select>
+    <select id="selectProteinName" parameterType="List" resultType="String">
+        select gene_symbol from proteins where gene_symbol in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
+    </select>
+    <select id="selectEnzymeByProteins" parameterType="List" resultType="String">
+        select ename from enzyme where ename in (select pname from protein_enzyme where pname_e in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=2)
+        or ename in (select pname_e from protein_enzyme where pname in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=2)
+    </select>
+    <select id="selectEnzymeByEnzyme" parameterType="List" resultType="String">
+        select ename from enzyme where ename in (select pname from protein_enzyme where pname_e in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=3)
+        or ename in (select pname_e from protein_enzyme where pname in (
+        <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=3)
+    </select>
+    <select id="selectDrugAndProtein" parameterType="String" resultType="com.xhj.dddrug.vo.DrugVo">
+        select dname,pname from drug_protein where dname=#{drugName}
+    </select>
+    <select id="selectProteinToProtein" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select pname,pname_e from protein_enzyme where pname in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
+        and pname_e in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=1
+    </select>
+    <select id="selectProteinAndEnzyme" parameterType="java.util.HashMap" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select * from protein_enzyme where (pname in (
+          <foreach collection="proteins" separator="," item="protein">#{protein}</foreach>
+        ) and pname_e in (
+          <foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>
+        ))
+        or (pname in (
+          <foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>
+        ) and pname_e in (
+          <foreach collection="proteins" separator="," item="protein">#{protein}</foreach>
+        ))
+    </select>
+    <select id="selectEnzymeToEnzyme" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select pname,pname_e from protein_enzyme where pname in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
+        and pname_e in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        ) and re_type=3
+    </select>
+    <select id="selectEnzymeMet" parameterType="List" resultType="com.xhj.dddrug.vo.EnzymeMetVo">
+        select ename,mname from enzyme_metabolites where ename in (
+          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        )
     </select>
 </mapper>

@@ -30,8 +30,11 @@ public class ListAction {
         if(vo.getPageNow()<=0){
             vo.setPageNow(1);
         }
-        PageBean<Protein> pageBean = proteinService.selectProteins(vo.getPageNow());
+        //vo.setPageNow((vo.getPageNow()-1)*5);
+        vo.setRowNumber((vo.getPageNow()-1)*5);
+        vo.setPageSize(5);
+        PageBean<Protein> pageBean = proteinService.selectProteins(vo);
         request.setAttribute("pageBean",pageBean);
-        return  "list";
+        return "proteinList";
     }
 }

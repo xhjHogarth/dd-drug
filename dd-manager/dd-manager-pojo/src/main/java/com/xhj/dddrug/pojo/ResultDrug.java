@@ -11,6 +11,7 @@ import java.util.List;
 public class ResultDrug {
 
     private String drugName;
+    private String drugBank;
     private List<String> proteins;
     private List<String> metabolites;
     private List<String> references;
@@ -21,6 +22,14 @@ public class ResultDrug {
 
     public void setDrugName(String drugName) {
         this.drugName = drugName;
+    }
+
+    public String getDrugBank() {
+        return drugBank;
+    }
+
+    public void setDrugBank(String drugBank) {
+        this.drugBank = drugBank;
     }
 
     public List<String> getProteins() {
@@ -51,6 +60,7 @@ public class ResultDrug {
     public String toString() {
         return "ResultDrug{" +
                 "drugName='" + drugName + '\'' +
+                ", drugBank='" + drugBank + '\'' +
                 ", proteins=" + proteins +
                 ", metabolites=" + metabolites +
                 ", references=" + references +

@@ -8,7 +8,9 @@ package com.xhj.dddrug.vo;
  */
 public class QueryVo {
     private int pageNow;
+    private int rowNumber;//从第几行数据开始
     private int pageSize;
+    private String drugName;
 
     public int getPageNow() {
         return pageNow;
@@ -16,6 +18,14 @@ public class QueryVo {
 
     public void setPageNow(int pageNow) {
         this.pageNow = pageNow;
+    }
+
+    public int getRowNumber() {
+        return rowNumber;
+    }
+
+    public void setRowNumber(int rowNumber) {
+        this.rowNumber = rowNumber;
     }
 
     public int getPageSize() {
@@ -26,11 +36,21 @@ public class QueryVo {
         this.pageSize = pageSize;
     }
 
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
+    }
+
     @Override
     public String toString() {
         return "QueryVo{" +
                 "pageNow=" + pageNow +
+                ", rowNumber=" + rowNumber +
                 ", pageSize=" + pageSize +
+                ", drugName='" + drugName + '\'' +
                 '}';
     }
 }
