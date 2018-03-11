@@ -23,4 +23,37 @@
           <foreach collection="list" separator="," item="item">#{item}</foreach>
         )
     </select>
+    <select id="existsProtein" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo" resultType="int">
+        select count(*) from protein_enzyme where pname=#{pname} and pname_e=#{pname_e}
+    </select>
+    <select id="existsProtein2" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo" resultType="int">
+        select count(*) from protein_enzyme where pname=#{pname_e} and pname_e=#{pname}
+    </select>
+    <select id="enterData" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        insert into protein_enzyme(pname,pname_e) VALUES (#{pname},#{pname_e})
+    </select>
+    <select id="existsEnzymeMet" parameterType="com.xhj.dddrug.vo.EnzymeMetVo" resultType="int">
+        select count(*) from enzyme_metabolites where ename=#{ename} and mname=#{mname}
+    </select>
+    <select id="enterEnzymeMet" parameterType="com.xhj.dddrug.vo.EnzymeMetVo">
+        insert into enzyme_metabolites(ename,mname) VALUES(#{ename},#{mname})
+    </select>
+    <select id="existProtein" parameterType="String" resultType="int">
+        select count(*) from proteins where gene_symbol=#{protein}
+    </select>
+    <select id="enterProtein" parameterType="String">
+        insert into proteins(gene_symbol) VALUES (#{protein})
+    </select>
+    <select id="existsEnzyme" parameterType="String" resultType="int">
+        SELECT  count(*) from enzyme where ename=#{enzyme}
+    </select>
+    <select id="enterEnzyme" parameterType="String">
+        insert into enzyme(ename) VALUES (#{enzyme})
+    </select>
+    <select id="existsMetabolites" parameterType="String" resultType="int">
+        select count(*) from metabolites where mname=#{metabolites}
+    </select>
+    <select id="enterMetabolites" parameterType="String">
+        insert into metabolites(mname) VALUES (#{metabolites})
+    </select>
 </mapper>

@@ -4,6 +4,8 @@ import com.xhj.dddrug.dao.ProteinMapper;
 import com.xhj.dddrug.pojo.Protein;
 import com.xhj.dddrug.service.ProteinService;
 import com.xhj.dddrug.utils.PageBean;
+import com.xhj.dddrug.vo.EnzymeMetVo;
+import com.xhj.dddrug.vo.ProteinEnzymeVo;
 import com.xhj.dddrug.vo.QueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,7 @@ public class ProteinServieImpl implements ProteinService{
             Protein protein = proteins.get(i);
             //为了前台显示的数据的Num是连续的
             //这个pid和数据库中的pid是不同的
-            protein.setPid((vo.getPageNow()-1)*5+i+1);
+            protein.setPid((vo.getPageNow()-1)*10+i+1);
             proteins.set(i,protein);
         }
         PageBean<Protein> pageBean = new PageBean<>();
@@ -62,8 +64,71 @@ public class ProteinServieImpl implements ProteinService{
         pageBean.setPageSize(vo.getPageSize());
         pageBean.setSerachKey(vo.getDrugName());
         int count = proteinDao.queryProteinCount(proteinsGeneSymbol);
-        int pageCount = count/5 + (count%5==0?0:1);
+        pageBean.setDataCount(count);
+        int pageCount = count/10 + (count%10==0?0:1);
         pageBean.setPageCount(pageCount);
         return pageBean;
     }
+
+    @Override
+    public int existsProtein(ProteinEnzymeVo proteinEnzymeVo) {
+        int exists = proteinDao.existsProtein(proteinEnzymeVo);
+        return exists;
+    }
+
+    @Override
+    public int existsProtein2(ProteinEnzymeVo proteinEnzymeVo) {
+        int exists = proteinDao.existsProtein2(proteinEnzymeVo);
+        return exists;
+    }
+
+    @Override
+    public void enterData(ProteinEnzymeVo proteinEnzymeVo) {
+        proteinDao.enterData(proteinEnzymeVo);
+    }
+
+    @Override
+    public int existsEnzymeMet(EnzymeMetVo enzymeMetVo) {
+        int exists = proteinDao.existsEnzymeMet(enzymeMetVo);
+        return exists;
+    }
+
+    @Override
+    public void enterEnzymeMet(EnzymeMetVo enzymeMetVo) {
+        proteinDao.enterEnzymeMet(enzymeMetVo);
+    }
+
+    @Override
+    public int existProtein(String protein) {
+        int exists = proteinDao.existProtein(protein);
+        return exists;
+    }
+
+    @Override
+    public void enterProtein(String protein) {
+        proteinDao.enterProtein(protein);
+    }
+
+    @Override
+    public int existsEnzyme(String enzyme) {
+        int exists = proteinDao.existsEnzyme(enzyme);
+        return exists;
+    }
+
+    @Override
+    public void enterEnzyme(String enzyme) {
+        proteinDao.enterEnzyme(enzyme);
+    }
+
+    @Override
+    public int existsMetabolites(String metabolites) {
+        int exists = proteinDao.existsMetabolites(metabolites);
+        return exists;
+    }
+
+    @Override
+    public void enterMetabolites(String metabolites) {
+        proteinDao.enterMetabolites(metabolites);
+    }
+
 }

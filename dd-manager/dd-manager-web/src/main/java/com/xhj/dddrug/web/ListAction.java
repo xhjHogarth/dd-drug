@@ -31,8 +31,8 @@ public class ListAction {
             vo.setPageNow(1);
         }
         //vo.setPageNow((vo.getPageNow()-1)*5);
-        vo.setRowNumber((vo.getPageNow()-1)*5);
-        vo.setPageSize(5);
+        vo.setRowNumber((vo.getPageNow()-1)*10);
+        vo.setPageSize(10);
         PageBean<Protein> pageBean = proteinService.selectProteins(vo);
         request.setAttribute("pageBean",pageBean);
         return "proteinList";

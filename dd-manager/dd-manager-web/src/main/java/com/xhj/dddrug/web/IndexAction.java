@@ -20,6 +20,6 @@ public class IndexAction {
 
     @RequestMapping("/{page}")
     public String page(@PathVariable("page") String page){
-        return "page";
+        return page;
     }
 }

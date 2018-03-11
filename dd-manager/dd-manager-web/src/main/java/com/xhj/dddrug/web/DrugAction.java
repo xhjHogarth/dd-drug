@@ -46,7 +46,8 @@ public class DrugAction {
 
     @RequestMapping("/drugGraph.action")
     public String drugGraph(HttpServletRequest request){
-        String drugName = "Methotrexate";
+        //String drugName = "Acetaminophen";
+        String drugName = request.getParameter("drugName");
         List<Node> nodes = drugService.setNodes(drugName);
         List<Link> links = drugService.setLinks(drugName);
         Graph graph = new Graph();

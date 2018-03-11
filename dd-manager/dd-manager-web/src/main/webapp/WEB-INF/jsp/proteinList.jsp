@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>查询结果</title>
+    <title>Proteins</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.4.4.min.js"></script>
     <script>
         function to_page(page) {
@@ -12,14 +12,43 @@
             document.listForm.submit();
         }
     </script>
+    <style>
+        .top_ul{
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+        }
+        .top_a{
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            margin-left: 70px;
+        }
+    </style>
 </head>
 <body>
+    <div style="text-align: center">
+        <img src="${pageContext.request.contextPath}/images/top.png">
+    </div>
+    <div style="background-color: #B87B57;width: 940px;
+                height: 30px;margin: 0 auto;">
+        <ul class="top_ul">
+            <li style="display: inline"><a href="${pageContext.request.contextPath}/" class="top_a">Home</a></li>
+            <li style="display: inline"><a href="#" class="top_a">Browse</a></li>
+            <li style="display: inline"><a href="#" class="top_a">Download</a></li>
+            <li style="display: inline"><a href="#" class="top_a">Submit</a></li>
+            <li style="display: inline"><a href="${pageContext.request.contextPath}/help" class="top_a">Help</a></li>
+            <li style="display: inline"><a href="${pageContext.request.contextPath}/about" class="top_a">About</a></li>
+        </ul>
+    </div>
+    <div style="width: 940px;margin: 0 auto">
+        <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png" style="display: inline">
+        <h3 style="display: inline;margin-left: 250px;font-size: 30px;color: #C55A11">Related proteins</h3>
+        <hr>
+    </div>
     <form id="listForm" name="listForm">
-        <table border="1px" align="center" style="margin-top: 2%">
-            <tr>
-                <td colspan="5" align="center">查询结果</td>
-            </tr>
-            <tr>
+        <table border="1px" align="center" style="margin-top: 2%;text-align: center" cellspacing="0">
+            <tr style="background-color: #DDEBF7;border: 10px;">
                 <td>Num.</td>
                 <td>Protein Name</td>
                 <td>Gene Symbol</td>
@@ -57,6 +86,12 @@
                 </td>
             </tr>
         </table>
+        <div style="width: 700px;margin: 0 auto;text-align: right;margin-top: 15px">
+            <span>Total amount:${pageBean.dataCount}</span>
+        </div>
     </form>
+    <div style="text-align: center;margin-top: 50px">
+        <img src="${pageContext.request.contextPath}/images/bottom.png">
+    </div>
 </body>
 </html>
