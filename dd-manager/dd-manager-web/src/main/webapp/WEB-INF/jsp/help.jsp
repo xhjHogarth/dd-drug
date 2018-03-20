@@ -1,17 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
     <title>Help</title>
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%@include file="quote.jsp"%>
     <style>
         .top_ul{
             list-style-type: none;
             margin: 0px;
             padding: 0px;
         }
-        a{
+        .top_a{
             text-decoration: none;
             font-size: 18px;
             color: white;
@@ -27,20 +25,7 @@
 </head>
 <body>
 <div>
-    <div style="text-align: center">
-        <img src="${pageContext.request.contextPath}/images/top.png">
-    </div>
-    <div style="background-color: #B87B57;width: 940px;
-        height: 30px;margin: 0 auto;">
-        <ul class="top_ul">
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/">Home</a></li>
-            <li style="display: inline"><a href="#">Browse</a></li>
-            <li style="display: inline"><a href="#">Download</a></li>
-            <li style="display: inline"><a href="#">Submit</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/help">Help</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/about">About</a></li>
-        </ul>
-    </div>
+    <jsp:include page="top.jsp"/>
     <div style="margin: 0 auto;width: 940px;height: 40px;margin-top: 20px;">
         <span style="font-size: 25px;color: #C55A11;">Help</span>
     </div>

@@ -2,39 +2,29 @@
 <html>
 <head>
     <title>Home</title>
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%@include file="quote.jsp"%>
     <style>
         .top_ul{
             list-style-type: none;
             margin: 0px;
             padding: 0px;
         }
-        a{
+        .top_a{
             text-decoration: none;
             font-size: 18px;
             color: white;
             margin-left: 70px;
         }
     </style>
+    <script type="text/javascript">
+        function tohelp() {
+            window.location.href = "${pageContext.request.contextPath}/help";
+        }
+    </script>
 </head>
 <body>
     <div>
-        <div style="text-align: center">
-            <img src="${pageContext.request.contextPath}/images/top.png">
-        </div>
-        <div style="background-color: #B87B57;width: 940px;
-        height: 30px;margin: 0 auto;">
-            <ul class="top_ul">
-                <li style="display: inline"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                <li style="display: inline"><a href="#">Browse</a></li>
-                <li style="display: inline"><a href="#">Download</a></li>
-                <li style="display: inline"><a href="#">Submit</a></li>
-                <li style="display: inline"><a href="${pageContext.request.contextPath}/help">Help</a></li>
-                <li style="display: inline"><a href="${pageContext.request.contextPath}/about">About</a></li>
-            </ul>
-        </div>
+        <jsp:include page="top.jsp"/>
         <div style="text-align: center;margin-top: 20px">
             <form>
                 <div style="margin: 0 auto;text-align: center;width: 940px;height: 50px">
@@ -50,7 +40,11 @@
             </form>
         </div>
         <div style="width: 940px;height: 30px;margin: 0 auto;">
-            <span style="margin-left: 150px">e.g. Acetaminophen,GOT1,Glycine</span>
+            <span style="margin-left: 150px">e.g. <a href="${pageContext.request.contextPath}/drugDetail.action?drugName=Acetaminophen">Acetaminophen</a>
+                ,GOT1,Glycine
+                <input type="button" style="width: 20px;height: 20px;border: 0px;padding: 0px;vertical-align: middle;
+                        background-image: url(${pageContext.request.contextPath}/images/wenhao.jpg)" 
+                       onclick="tohelp()"></span>
         </div>
         <div class="container" style="width: 940px;height: 30px;margin: 0 auto;">
             <div class="row clearfix">

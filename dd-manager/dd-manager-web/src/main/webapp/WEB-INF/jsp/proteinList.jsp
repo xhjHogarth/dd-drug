@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Proteins</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.4.4.min.js"></script>
+    <%@include file="quote.jsp"%>
     <script>
         function to_page(page) {
             if(page){
@@ -27,28 +27,15 @@
     </style>
 </head>
 <body>
-    <div style="text-align: center">
-        <img src="${pageContext.request.contextPath}/images/top.png">
-    </div>
-    <div style="background-color: #B87B57;width: 940px;
-                height: 30px;margin: 0 auto;">
-        <ul class="top_ul">
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/" class="top_a">Home</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Browse</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Download</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Submit</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/help" class="top_a">Help</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/about" class="top_a">About</a></li>
-        </ul>
-    </div>
+    <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto">
         <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png" style="display: inline">
         <h3 style="display: inline;margin-left: 250px;font-size: 30px;color: #C55A11">Related proteins</h3>
         <hr>
     </div>
     <form id="listForm" name="listForm">
-        <table border="1px" align="center" style="margin-top: 2%;text-align: center" cellspacing="0">
-            <tr style="background-color: #DDEBF7;border: 10px;">
+        <table border="1px" align="center" style="margin-top: 2%;" cellspacing="0">
+            <tr style="background-color: #DDEBF7;border: 10px;text-align: center">
                 <td>Num.</td>
                 <td>Protein Name</td>
                 <td>Gene Symbol</td>

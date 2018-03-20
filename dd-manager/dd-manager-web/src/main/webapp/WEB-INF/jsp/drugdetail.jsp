@@ -3,9 +3,7 @@
 <html>
 <head>
     <title>Drug</title>
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%@include file="quote.jsp"%>
     <style>
         .top_ul{
             list-style-type: none;
@@ -33,20 +31,7 @@
     </script>
 </head>
 <body>
-    <div style="text-align: center">
-        <img src="${pageContext.request.contextPath}/images/top.png">
-    </div>
-    <div style="background-color: #B87B57;width: 940px;
-            height: 30px;margin: 0 auto;">
-        <ul class="top_ul">
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/" class="top_a">Home</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Browse</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Download</a></li>
-            <li style="display: inline"><a href="#" class="top_a">Submit</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/help" class="top_a">Help</a></li>
-            <li style="display: inline"><a href="${pageContext.request.contextPath}/about" class="top_a">About</a></li>
-        </ul>
-    </div>
+    <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto;">
         <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png">
     </div>
@@ -76,7 +61,7 @@
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="2"><a href="${pageContext.request.contextPath}/">(more......)</a></td>
+            <td colspan="2"><a href="${pageContext.request.contextPath}/listMe.action?drugName=${resultDrug.drugName}">(more......)</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: #DEEBF7;font-weight: bold" align="center">Reference(PubMed)</td>
@@ -84,8 +69,8 @@
         <tr>
             <td colspan="2">
                 <c:forEach items="${resultDrug.references}" var="reference" varStatus="vs3">
-                    ${reference},
-                </c:forEach><a href="${pageContext.request.contextPath}/">(more......)</a>
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=${reference}">${reference}</a>,
+                </c:forEach><a href="${pageContext.request.contextPath}/listReference.action?drugName=${resultDrug.drugName}">(more......)</a>
             </td>
         </tr>
     </table>

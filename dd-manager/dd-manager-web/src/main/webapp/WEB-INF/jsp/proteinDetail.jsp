@@ -6,7 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Protein</title>
 </head>
 <body>
 <table border="1px" align="center" style="margin-top: 2%">

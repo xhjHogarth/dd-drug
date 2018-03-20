@@ -1,5 +1,10 @@
 package com.xhj.dddrug.service;
 
+import com.xhj.dddrug.dto.Order;
+import com.xhj.dddrug.dto.Page;
+import com.xhj.dddrug.dto.Result;
+import com.xhj.dddrug.pojo.Metabolite;
+import com.xhj.dddrug.pojo.Reference;
 import com.xhj.dddrug.utils.Link;
 import com.xhj.dddrug.utils.Node;
 
@@ -24,4 +29,8 @@ public interface DrugService {
     public List<Node> setNodes(String drugName);
 
     public List<Link> setLinks(String drugName);
+
+    public Result<Metabolite> listMetabolites(String drugName, Page page, Order order);
+
+    public Result<Reference> listReferences(String drugName, Page page, Order order);
 }

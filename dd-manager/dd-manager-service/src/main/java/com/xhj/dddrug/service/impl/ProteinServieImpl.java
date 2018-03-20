@@ -1,7 +1,11 @@
 package com.xhj.dddrug.service.impl;
 
 import com.xhj.dddrug.dao.ProteinMapper;
+import com.xhj.dddrug.dto.Page;
+import com.xhj.dddrug.dto.Result;
+import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.service.ProteinService;
 import com.xhj.dddrug.utils.PageBean;
 import com.xhj.dddrug.vo.EnzymeMetVo;
@@ -130,5 +134,7 @@ public class ProteinServieImpl implements ProteinService{
     public void enterMetabolites(String metabolites) {
         proteinDao.enterMetabolites(metabolites);
     }
+
+
 
 }

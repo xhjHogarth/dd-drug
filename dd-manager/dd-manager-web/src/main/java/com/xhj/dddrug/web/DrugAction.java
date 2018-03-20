@@ -55,6 +55,7 @@ public class DrugAction {
         graph.setLinks(links);
         String graphStr = JsonUtils.objectToJson(graph);
         request.setAttribute("graph",graphStr);
+        request.setAttribute("drugName",drugName);
         System.out.println(graphStr);
         return "drugGraph";
     }

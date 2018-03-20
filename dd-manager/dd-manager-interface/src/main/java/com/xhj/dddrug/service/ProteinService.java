@@ -37,4 +37,5 @@ public interface ProteinService {
     public int existsMetabolites(String metabolites);
 
     public void enterMetabolites(String metabolites);
+
 }

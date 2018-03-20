@@ -1,5 +1,7 @@
 package com.xhj.dddrug.dao;
 
+import com.xhj.dddrug.pojo.Metabolite;
+import com.xhj.dddrug.pojo.Reference;
 import com.xhj.dddrug.vo.DrugVo;
 import com.xhj.dddrug.vo.EnzymeMetVo;
 import com.xhj.dddrug.vo.ProteinEnzymeVo;
@@ -43,4 +45,8 @@ public interface DrugMapper {
     public List<ProteinEnzymeVo> selectProteinToProtein(List<String> data);
 
     public List<ProteinEnzymeVo> selectEnzymeToEnzyme(List<String> enzymeNames1);
+
+    public List<Metabolite> listMetabolites(Map<String, Object> map);
+
+    public List<Reference> listReferences(Map<String, Object> map);
 }
