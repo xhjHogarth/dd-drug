@@ -1,6 +1,10 @@
 package com.xhj.dddrug.dao;
 
+import com.xhj.dddrug.pojo.Drug;
+import com.xhj.dddrug.pojo.Enzyme;
+import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.vo.DrugVo;
 import com.xhj.dddrug.vo.EnzymeMetVo;
 import com.xhj.dddrug.vo.ProteinEnzymeVo;
 import com.xhj.dddrug.vo.QueryVo;
@@ -24,25 +28,19 @@ public interface ProteinMapper {
     //总共有多少条数据
     public int queryProteinCount(List<String> data);
 
-    public int existsProtein(ProteinEnzymeVo proteinEnzymeVo);
+    public List<Drug> selectDrugs(Map<String, Object> map);
 
-    public int existsProtein2(ProteinEnzymeVo proteinEnzymeVo);
+    public List<Enzyme> selectEnzyme(Map<String, Object> map);
 
-    public void enterData(ProteinEnzymeVo proteinEnzymeVo);
+    public List<Metabolite> selectMetabolites(Map<String, Object> map);
 
-    public int existsEnzymeMet(EnzymeMetVo enzymeMetVo);
+    public List<Drug> listDrugs(Map<String, Object> map);
 
-    public void enterEnzymeMet(EnzymeMetVo enzymeMetVo);
+    public List<DrugVo> selectDrugProtein(Map<String, Object> map);
 
-    public int existProtein(String protein);
+    public List<ProteinEnzymeVo> selectProteinEnzyme(Map<String, Object> map);
 
-    public void enterProtein(String protein);
+    public List<EnzymeMetVo> selectEnzymeMetabolite(Map<String, Object> map);
 
-    public int existsEnzyme(String enzyme);
-
-    public void enterEnzyme(String enzyme);
-
-    public int existsMetabolites(String metabolites);
-
-    public void enterMetabolites(String metabolites);
+    public List<Metabolite> selectMetabolitesByPage(Map<String, Object> map);
 }

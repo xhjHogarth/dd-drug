@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Reference</title>
+    <title>Data</title>
     <%@include file="quote.jsp"%>
     <style>
         .top_ul{
@@ -21,33 +21,26 @@
     <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto">
         <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png" style="display: inline">
-        <h3 style="display: inline;vertical-align: bottom;margin-left: 250px;font-size: 30px;color: #C55A11">References</h3>
+        <h3 style="display: inline;vertical-align: bottom;margin-left: 300px;font-size: 30px;color: #C55A11">Data</h3>
         <hr>
+        <h3 style="font-size: 20px;color: #C55A11">Edge Information</h3>
     </div>
-    <div style="width:400px;height:auto;margin: 20px auto;">
-        <table id="dgItems"></table>
+    <div style="width: 600px;margin: 0 auto">
         <input type="hidden" id="drugName" value="${drugName}">
         <input type="hidden" id="type" value="${type}">
+        <table id="dgItems"></table>
     </div>
     <script>
-        $("#dgItems").datagrid({
+        $('#dgItems').datagrid({
             rownumbers:true,
-            //允许多列排序
-            multiSort:true,
-            //在设置分页属性的时候，初始化页面大小选择列表
-            pageList:[10,20,50],
-            //请求服务器端数据
-            url:'references/'+$('#drugName').val()+'/'+$('#type').val(),
-            //请求方式，默认是POST
+            pageList:[10,20],
+            url:'listEdges/'+$('#drugName').val()+'/'+$('#type').val(),
             method:'get',
-            //是否显示分页工具栏
-            pagination: true,
-            fit: false,
-            //只能选中一个
             singleSelect:true,
-            //列属性
+            pagination: true,
             columns:[[
-                {field:'pmid',title:'PMID',width:370,sortable:true}
+                {field:'source',title:'Node1',width:300},
+                {field:'target',title:'Node2',width:300}
             ]]
         });
     </script>

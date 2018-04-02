@@ -1,5 +1,8 @@
 package com.xhj.dddrug.web;
 
+import com.xhj.dddrug.pojo.Metabolite;
+import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.pojo.Reference;
 import com.xhj.dddrug.pojo.ResultDrug;
 import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.utils.Graph;
@@ -29,13 +32,14 @@ public class DrugAction {
     public String drugDetail(HttpServletRequest request){
         ResultDrug resultDrug = new ResultDrug();
         resultDrug.setDrugName("Methotrexate");
-        String drugbank = drugService.selectDrugBank(resultDrug.getDrugName());
+        resultDrug.setType("hepatotoxicity");
+        String drugbank = drugService.selectDrugBank(resultDrug);
         resultDrug.setDrugBank(drugbank);
-        List<String> proteins = drugService.selectProteins(resultDrug.getDrugName());
+        List<Protein> proteins = drugService.selectProteins(resultDrug);
         resultDrug.setProteins(proteins);
-        List<String> metabolites = drugService.selectMetabolites(resultDrug.getDrugName());
+        List<Metabolite> metabolites = drugService.selectMetabolites(resultDrug);
         resultDrug.setMetabolites(metabolites);
-        List<String> references = drugService.selectReference(resultDrug.getDrugName());
+        List<Reference> references = drugService.selectReference(resultDrug);
         resultDrug.setReferences(references);
         request.setAttribute("resultDrug",resultDrug);
 //        System.out.println("-----------------------");
@@ -48,15 +52,21 @@ public class DrugAction {
     public String drugGraph(HttpServletRequest request){
         //String drugName = "Acetaminophen";
         String drugName = request.getParameter("drugName");
-        List<Node> nodes = drugService.setNodes(drugName);
-        List<Link> links = drugService.setLinks(drugName);
+        String type = "hepatotoxicity";
+        ResultDrug resultDrug = new ResultDrug();
+        resultDrug.setDrugName(drugName);
+        resultDrug.setType(type);
+        List<Node> nodes = drugService.setNodes(resultDrug);
+        List<Link> links = drugService.setLinks(resultDrug);
         Graph graph = new Graph();
         graph.setNodes(nodes);
         graph.setLinks(links);
         String graphStr = JsonUtils.objectToJson(graph);
-        request.setAttribute("graph",graphStr);
         request.setAttribute("drugName",drugName);
-        System.out.println(graphStr);
+        request.setAttribute("graph",graphStr);
+        //request.setAttribute("drugName",drugName);
+        request.setAttribute("type",type);
+        //System.out.println(graphStr);
         return "drugGraph";
     }
 }

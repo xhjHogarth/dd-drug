@@ -23,37 +23,66 @@
           <foreach collection="list" separator="," item="item">#{item}</foreach>
         )
     </select>
-    <select id="existsProtein" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo" resultType="int">
-        select count(*) from protein_enzyme where pname=#{pname} and pname_e=#{pname_e}
+    <select id="selectDrugs" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select DISTINCT dname,drugbank,`type` from drugs where `type`=#{type} and del=1 and dname in(
+          select DISTINCT dname from drug_protein where `type`=#{type} and del=1 and pname=#{data.gene_symbol}
+        )
     </select>
-    <select id="existsProtein2" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo" resultType="int">
-        select count(*) from protein_enzyme where pname=#{pname_e} and pname_e=#{pname}
+    <select id="selectEnzyme" parameterType="Map" resultType="com.xhj.dddrug.pojo.Enzyme">
+        select DISTINCT ename,entrz_gene,`type` from enzyme where `type`=#{type} and del=1 and ename in (
+            select DISTINCT pname_e from protein_enzyme where re_type=2 and `type`=#{type} and del=1 and pname=#{data.gene_symbol}
+        )
     </select>
-    <select id="enterData" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo">
-        insert into protein_enzyme(pname,pname_e) VALUES (#{pname},#{pname_e})
+    <select id="selectMetabolites" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select DISTINCT mname,hmdb,kc,type from metabolites where `type`=#{type} and del=1 and mname in (
+            select DISTINCT mname from enzyme_metabolites where `type`=#{type} and del=1 and ename in(
+                <foreach collection="data" separator="," item="item">#{item.ename}</foreach>
+            )
+        )
     </select>
-    <select id="existsEnzymeMet" parameterType="com.xhj.dddrug.vo.EnzymeMetVo" resultType="int">
-        select count(*) from enzyme_metabolites where ename=#{ename} and mname=#{mname}
+    <select id="listDrugs" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select DISTINCT dname,drugbank,`type` from drugs where `type`=#{type} and del=1 and dname in(
+          select DISTINCT dname from drug_protein where `type`=#{type} and del=1 and pname=#{data.gene_symbol}
+        )
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by did asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
     </select>
-    <select id="enterEnzymeMet" parameterType="com.xhj.dddrug.vo.EnzymeMetVo">
-        insert into enzyme_metabolites(ename,mname) VALUES(#{ename},#{mname})
+    <select id="selectDrugProtein" parameterType="Map" resultType="com.xhj.dddrug.vo.DrugVo">
+        select DISTINCT dname,pname,`type` from drug_protein where `type`=#{type} and del=1 and pname=#{data.gene_symbol}
     </select>
-    <select id="existProtein" parameterType="String" resultType="int">
-        select count(*) from proteins where gene_symbol=#{protein}
+    <select id="selectProteinEnzyme" parameterType="Map" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select DISTINCT pname,pname_e,`type` from protein_enzyme where `type`=#{type} and del=1 and re_type=2 and pname=#{data.gene_symbol}
     </select>
-    <select id="enterProtein" parameterType="String">
-        insert into proteins(gene_symbol) VALUES (#{protein})
+    <select id="selectEnzymeMetabolite" parameterType="Map" resultType="com.xhj.dddrug.vo.EnzymeMetVo">
+        select DISTINCT ename,mname,`type` from enzyme_metabolites where `type`=#{type} and del=1 and ename in
+        (<foreach collection="data" separator="," item="item">#{item.ename}</foreach>)
     </select>
-    <select id="existsEnzyme" parameterType="String" resultType="int">
-        SELECT  count(*) from enzyme where ename=#{enzyme}
-    </select>
-    <select id="enterEnzyme" parameterType="String">
-        insert into enzyme(ename) VALUES (#{enzyme})
-    </select>
-    <select id="existsMetabolites" parameterType="String" resultType="int">
-        select count(*) from metabolites where mname=#{metabolites}
-    </select>
-    <select id="enterMetabolites" parameterType="String">
-        insert into metabolites(mname) VALUES (#{metabolites})
+    <select id="selectMetabolitesByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select DISTINCT mname,hmdb,kc,type from metabolites where `type`=#{type} and del=1 and mname in (
+            select DISTINCT mname from enzyme_metabolites where `type`=#{type} and del=1 and ename in
+            (
+              <foreach collection="data" separator="," item="item">#{item.ename}</foreach>
+            )
+        )
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by mid asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
     </select>
 </mapper>

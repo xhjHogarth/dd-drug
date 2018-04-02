@@ -12,7 +12,7 @@ public class Metabolite {
     private String mname;
     private String hmdb;
     private String kc;
-    private String typename;
+    private String type;
 
     public int getMid() {
         return mid;
@@ -46,12 +46,12 @@ public class Metabolite {
         this.kc = kc;
     }
 
-    public String getTypename() {
-        return typename;
+    public String getType() {
+        return type;
     }
 
-    public void setTypename(String typename) {
-        this.typename = typename;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Metabolite {
                 ", mname='" + mname + '\'' +
                 ", hmdb='" + hmdb + '\'' +
                 ", kc='" + kc + '\'' +
-                ", typename='" + typename + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

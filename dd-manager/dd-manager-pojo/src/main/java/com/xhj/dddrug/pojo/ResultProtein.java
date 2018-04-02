@@ -9,8 +9,40 @@ import java.util.List;
  * Version:V1.0
  */
 public class ResultProtein {
-    private String proteinName;
-    private String upkb;
-    private List<String> drugs;
-    private  List<String> metabolites;
+    private Protein protein;
+    private List<Drug> drugs;
+    private List<Metabolite> metabolites;
+
+    public Protein getProtein() {
+        return protein;
+    }
+
+    public void setProtein(Protein protein) {
+        this.protein = protein;
+    }
+
+    public List<Drug> getDrugs() {
+        return drugs;
+    }
+
+    public void setDrugs(List<Drug> drugs) {
+        this.drugs = drugs;
+    }
+
+    public List<Metabolite> getMetabolites() {
+        return metabolites;
+    }
+
+    public void setMetabolites(List<Metabolite> metabolites) {
+        this.metabolites = metabolites;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultProtein{" +
+                "protein=" + protein +
+                ", drugs=" + drugs +
+                ", metabolites=" + metabolites +
+                '}';
+    }
 }

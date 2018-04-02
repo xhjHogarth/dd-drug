@@ -40,28 +40,29 @@
             <td align="center" width="100px" style="font-weight: bold">Drug Name</td>
             <td width="300px"><a href="https://www.drugbank.ca/drugs/${resultDrug.drugBank}" style="margin-left: 50px">${resultDrug.drugName}</a></td>
             <input type="hidden" value="${resultDrug.drugName}" id="drugName">
+            <input type="hidden" value="${resultDrug.type}" id="type">
         </tr>
         <tr>
             <td colspan="2" style="background-color: #DEEBF7;font-weight: bold" align="center">Related Proteins</td>
         </tr>
         <c:forEach items="${resultDrug.proteins}" var="protein" varStatus="vs1">
             <tr>
-                <td colspan="2" align="left">${vs1.index+1}.${protein}</td>
+                <td colspan="2" align="left">${vs1.index+1}.${protein.pname}</td>
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="2"><a href="${pageContext.request.contextPath}/listProtein.action?drugName=${resultDrug.drugName}">(more......)</a></td>
+            <td colspan="2"><a href="${pageContext.request.contextPath}/listProtein.action?drugName=${resultDrug.drugName}&type=${resultDrug.type}">(more......)</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: #DEEBF7;font-weight: bold" align="center">Metabolites</td>
         </tr>
         <c:forEach items="${resultDrug.metabolites}" var="metabolite" varStatus="vs2">
             <tr>
-                <td colspan="2" align="left">${vs2.index+1}.${metabolite}</td>
+                <td colspan="2" align="left">${vs2.index+1}.${metabolite.mname}</td>
             </tr>
         </c:forEach>
         <tr>
-            <td colspan="2"><a href="${pageContext.request.contextPath}/listMe.action?drugName=${resultDrug.drugName}">(more......)</a></td>
+            <td colspan="2"><a href="${pageContext.request.contextPath}/listMe.action?drugName=${resultDrug.drugName}&type=${resultDrug.type}">(more......)</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: #DEEBF7;font-weight: bold" align="center">Reference(PubMed)</td>
@@ -69,8 +70,8 @@
         <tr>
             <td colspan="2">
                 <c:forEach items="${resultDrug.references}" var="reference" varStatus="vs3">
-                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=${reference}">${reference}</a>,
-                </c:forEach><a href="${pageContext.request.contextPath}/listReference.action?drugName=${resultDrug.drugName}">(more......)</a>
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=${reference}">${reference.pmid}</a>,
+                </c:forEach><a href="${pageContext.request.contextPath}/listReference.action?drugName=${resultDrug.drugName}&type=${resultDrug.type}">(more......)</a>
             </td>
         </tr>
     </table>

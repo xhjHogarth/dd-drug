@@ -9,8 +9,10 @@ package com.xhj.dddrug.pojo;
 public class Enzyme {
 
     private int eid;
+    private String name;
     private String ename;
     private String entrz_gene;
+    private String type;
 
     public int getEid() {
         return eid;
@@ -18,6 +20,14 @@ public class Enzyme {
 
     public void setEid(int eid) {
         this.eid = eid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEname() {
@@ -36,12 +46,22 @@ public class Enzyme {
         this.entrz_gene = entrz_gene;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Enzyme{" +
                 "eid=" + eid +
+                ", name='" + name + '\'' +
                 ", ename='" + ename + '\'' +
                 ", entrz_gene='" + entrz_gene + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

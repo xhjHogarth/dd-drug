@@ -1,10 +1,16 @@
 package com.xhj.dddrug.service;
 
+import com.xhj.dddrug.dto.Result;
+import com.xhj.dddrug.pojo.Drug;
+import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.utils.Link;
+import com.xhj.dddrug.utils.Node;
 import com.xhj.dddrug.utils.PageBean;
-import com.xhj.dddrug.vo.EnzymeMetVo;
-import com.xhj.dddrug.vo.ProteinEnzymeVo;
 import com.xhj.dddrug.vo.QueryVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: asus
@@ -16,26 +22,17 @@ public interface ProteinService {
 
     public PageBean<Protein> selectProteins(QueryVo vo);
 
-    public int existsProtein(ProteinEnzymeVo proteinEnzymeVo);
+    public List<Drug> selectDrugs(Map<String, Object> map);
 
-    public int existsProtein2(ProteinEnzymeVo proteinEnzymeVo);
+    public List<Metabolite> selectMetabolites(Map<String, Object> map);
 
-    public void enterData(ProteinEnzymeVo proteinEnzymeVo);
+    public Result<Drug> selectDrugsByPage(Map<String, Object> map);
 
-    public int existsEnzymeMet(EnzymeMetVo enzymeMetVo);
+    public List<Node> setNodes(Map<String, Object> map);
 
-    public void enterEnzymeMet(EnzymeMetVo enzymeMetVo);
+    public List<Link> setLinks(Map<String, Object> map);
 
-    public int existProtein(String protein);
+    public Result<Metabolite> selectMetabolitesByPage(Map<String, Object> map);
 
-    public void enterProtein(String protein);
-
-    public int existsEnzyme(String enzyme);
-
-    public void enterEnzyme(String enzyme);
-
-    public int existsMetabolites(String metabolites);
-
-    public void enterMetabolites(String metabolites);
-
+    public Result<Link> listEdges(Map<String, Object> map);
 }

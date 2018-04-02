@@ -6,8 +6,10 @@ import com.xhj.dddrug.dto.Result;
 import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
 import com.xhj.dddrug.pojo.Reference;
+import com.xhj.dddrug.pojo.ResultDrug;
 import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.service.ProteinService;
+import com.xhj.dddrug.utils.Link;
 import com.xhj.dddrug.utils.PageBean;
 import com.xhj.dddrug.vo.QueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,16 +54,21 @@ public class ListAction {
     @RequestMapping("/listMe.action")
     public String listMe(HttpServletRequest request){
         String drugName = request.getParameter("drugName");
+        String type = request.getParameter("type");
         request.setAttribute("drugName",drugName);
+        request.setAttribute("type",type);
         return "metabolitesList";
     }
 
     @ResponseBody
-    @RequestMapping(value = "items/{drugName}",method = RequestMethod.GET)
-    public Result<Metabolite> listMetabolites(@PathVariable("drugName") String drugName, Page page, Order order){
+    @RequestMapping(value = "items/{drugName}/{type}",method = RequestMethod.GET)
+    public Result<Metabolite> listMetabolites(@PathVariable("drugName") String drugName,@PathVariable("type") String type,
+                                              Page page, Order order, ResultDrug resultDrug){
         Result<Metabolite> result = null;
         try {
-           result = drugService.listMetabolites(drugName,page,order);
+            resultDrug.setDrugName(drugName);
+            resultDrug.setType(type);
+           result = drugService.listMetabolites(resultDrug,page,order);
            //System.out.println(result);
         }catch (Exception e){
             e.printStackTrace();
@@ -72,18 +79,51 @@ public class ListAction {
     @RequestMapping("/listReference.action")
     public String listRef(HttpServletRequest request){
         String drugName = request.getParameter("drugName");
+        String type = request.getParameter("type");
         request.setAttribute("drugName",drugName);
+        request.setAttribute("type",type);
         return "reference";
     }
 
     @ResponseBody
-    @RequestMapping(value = "references/{drugName}",method = RequestMethod.GET)
-    public Result<Reference> listReferences(@PathVariable("drugName") String drugName,Page page,Order order){
+    @RequestMapping(value = "references/{drugName}/{type}",method = RequestMethod.GET)
+    public Result<Reference> listReferences(@PathVariable("drugName") String drugName,@PathVariable("type") String type,
+                                            Page page,Order order,ResultDrug resultDrug){
         Result<Reference> result = null;
         try {
-            result = drugService.listReferences(drugName,page,order);
+            resultDrug.setDrugName(drugName);
+            resultDrug.setType(type);
+            result = drugService.listReferences(resultDrug,page,order);
         }catch (Exception e){
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/listData.action")
+    public String listData(HttpServletRequest request){
+        String drugName = request.getParameter("drugName");
+        String type = request.getParameter("type");
+        request.setAttribute("drugName",drugName);
+        request.setAttribute("type",type);
+        //System.out.println(drugName);
+        return "data";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "listEdges/{drugName}/{type}",method = RequestMethod.GET)
+    public Result<Link> listEdges(@PathVariable("drugName") String drugName,@PathVariable("type") String type,
+                                  Page page,ResultDrug resultDrug){
+        Result<Link> result = null;
+        try {
+            resultDrug.setDrugName(drugName);
+            resultDrug.setType(type);
+            result = drugService.listEdges(resultDrug,page);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int i = 0;i<result.getRows().size();i++){
+            System.out.println(result.getRows().get(i));
         }
         return result;
     }

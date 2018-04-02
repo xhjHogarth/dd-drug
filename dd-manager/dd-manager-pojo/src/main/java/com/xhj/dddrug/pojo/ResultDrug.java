@@ -12,9 +12,10 @@ public class ResultDrug {
 
     private String drugName;
     private String drugBank;
-    private List<String> proteins;
-    private List<String> metabolites;
-    private List<String> references;
+    private String type;
+    private List<Protein> proteins;
+    private List<Metabolite> metabolites;
+    private List<Reference> references;
 
     public String getDrugName() {
         return drugName;
@@ -32,27 +33,35 @@ public class ResultDrug {
         this.drugBank = drugBank;
     }
 
-    public List<String> getProteins() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<Protein> getProteins() {
         return proteins;
     }
 
-    public void setProteins(List<String> proteins) {
+    public void setProteins(List<Protein> proteins) {
         this.proteins = proteins;
     }
 
-    public List<String> getMetabolites() {
+    public List<Metabolite> getMetabolites() {
         return metabolites;
     }
 
-    public void setMetabolites(List<String> metabolites) {
+    public void setMetabolites(List<Metabolite> metabolites) {
         this.metabolites = metabolites;
     }
 
-    public List<String> getReferences() {
+    public List<Reference> getReferences() {
         return references;
     }
 
-    public void setReferences(List<String> references) {
+    public void setReferences(List<Reference> references) {
         this.references = references;
     }
 
@@ -61,6 +70,7 @@ public class ResultDrug {
         return "ResultDrug{" +
                 "drugName='" + drugName + '\'' +
                 ", drugBank='" + drugBank + '\'' +
+                ", type='" + type + '\'' +
                 ", proteins=" + proteins +
                 ", metabolites=" + metabolites +
                 ", references=" + references +

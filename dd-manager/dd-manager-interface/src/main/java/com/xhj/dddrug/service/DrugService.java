@@ -4,7 +4,9 @@ import com.xhj.dddrug.dto.Order;
 import com.xhj.dddrug.dto.Page;
 import com.xhj.dddrug.dto.Result;
 import com.xhj.dddrug.pojo.Metabolite;
+import com.xhj.dddrug.pojo.Protein;
 import com.xhj.dddrug.pojo.Reference;
+import com.xhj.dddrug.pojo.ResultDrug;
 import com.xhj.dddrug.utils.Link;
 import com.xhj.dddrug.utils.Node;
 
@@ -18,19 +20,21 @@ import java.util.List;
  */
 public interface DrugService {
     //得到的是部分用于展示的相关蛋白的数据
-    public List<String> selectProteins(String drugname);
+    public List<Protein> selectProteins(ResultDrug drug);
 
-    public List<String> selectMetabolites(String drugName);
+    public List<Metabolite> selectMetabolites(ResultDrug drug);
 
-    public List<String> selectReference(String drugName);
+    public List<Reference> selectReference(ResultDrug drug);
 
-    public String selectDrugBank(String drugName);
+    public String selectDrugBank(ResultDrug drug);
 
-    public List<Node> setNodes(String drugName);
+    public List<Node> setNodes(ResultDrug drug);
 
-    public List<Link> setLinks(String drugName);
+    public List<Link> setLinks(ResultDrug drug);
 
-    public Result<Metabolite> listMetabolites(String drugName, Page page, Order order);
+    public Result<Metabolite> listMetabolites(ResultDrug drug, Page page, Order order);
 
-    public Result<Reference> listReferences(String drugName, Page page, Order order);
+    public Result<Reference> listReferences(ResultDrug drug, Page page, Order order);
+
+    public Result<Link> listEdges(ResultDrug drug,Page page);
 }

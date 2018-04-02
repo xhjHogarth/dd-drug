@@ -4,107 +4,117 @@
     <sql id="Base_Column_List">
       mid,mname,hmdb,kc,typename
     </sql>
-    <select id="selectProteins" parameterType="String" resultType="String">
-        select gene_symbol from proteins where gene_symbol in (select pname from drug_protein where dname=#{drugname})
+    <select id="selectProteins" parameterType="com.xhj.dddrug.pojo.ResultDrug" resultType="com.xhj.dddrug.pojo.Protein">
+        select DISTINCT * from proteins where `type`=#{type} and del=1 and gene_symbol in
+        (select pname from drug_protein where dname=#{drugName} and `type`=#{type} and del=1)
     </select>
-    <select id="selectProteinsByList" parameterType="List" resultType="String">
-        select gene_symbol from proteins where
-        gene_symbol in (select pname from protein_enzyme where (pname in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) or pname_e in (<foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
-        or gene_symbol in (select pname_e from protein_enzyme where (pname in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>) or pname_e in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>)) and re_type=1)
-    </select>
-    <select id="selectProteinsPname" parameterType="List" resultType="String">
-        select pname from proteins where gene_symbol in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
+    <select id="selectProteinsByList" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select DISTINCT * from proteins where `type`=#{type} and del=1 and
+        (
+        gene_symbol in (
+                        select pname from protein_enzyme where (pname in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+                                                          or pname_e in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>))
+                                                          and re_type=1 and `type`=#{type} and del=1
+                        )
+        or gene_symbol in (
+                        select pname_e from protein_enzyme where (pname in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+                                                            or pname_e in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>))
+                                                            and re_type=1 and `type`=#{type} and del=1
+                          )
         )
     </select>
-    <select id="selectMetabolites" parameterType="List" resultType="String">
-        <!--select DISTINCT mname from enzyme_metabolites where ename in-->
-        <!--(select pname from protein_enzyme where (pname in (-->
+    <!--<select id="selectProteinsPname" parameterType="List" resultType="String">-->
+        <!--select pname from proteins where gene_symbol in (-->
           <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
-        <!--) or pname_e in (-->
-          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
-        <!--)) and re_type=2)-->
-        <!--or ename in (select pname_e from protein_enzyme where (pname in (-->
-          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
-        <!--) or pname_e in (-->
-          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
-        <!--)) and re_type=2)-->
-        select DISTINCT mname from enzyme_metabolites where ename in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
+        <!--)-->
+    <!--</select>-->
+    <select id="selectMetabolites" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select DISTINCT * from metabolites where `type`=#{type} and del=1 and mname IN
+        (
+            select mname from enzyme_metabolites where `type`=#{type} and del=1 and ename in
+            (
+                <foreach collection="data" separator="," item="item">#{item.ename}</foreach>
+            )
         )
     </select>
-    <select id="selectReference" parameterType="String" resultType="String">
-        select pmid from drug_reference where dname=#{drugname}
-    </select>
-    <select id="selectDrugBank" parameterType="String" resultType="String">
-        select drugbank from drugs where dname=#{drugName}
-    </select>
-    <select id="selectProteinName" parameterType="List" resultType="String">
-        select gene_symbol from proteins where gene_symbol in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>
+    <select id="selectReference" parameterType="com.xhj.dddrug.pojo.ResultDrug" resultType="com.xhj.dddrug.pojo.Reference">
+        select DISTINCT * from reference where `type`=#{type} and del=1 and pmid in
+        (
+            select pmid from drug_reference where dname=#{drugName} and `type`=#{type} and del=1
         )
     </select>
-    <select id="selectEnzymeByProteins" parameterType="List" resultType="String">
-        select ename from enzyme where ename in (select pname from protein_enzyme where pname_e in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=2)
-        or ename in (select pname_e from protein_enzyme where pname in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=2)
+    <select id="selectDrugBank" parameterType="com.xhj.dddrug.pojo.ResultDrug" resultType="String">
+        select DISTINCT drugbank from drugs where dname=#{drugName} and `type`=#{type} and del=1
     </select>
-    <select id="selectEnzymeByEnzyme" parameterType="List" resultType="String">
-        select ename from enzyme where ename in (select pname from protein_enzyme where pname_e in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=3)
-        or ename in (select pname_e from protein_enzyme where pname in (
-        <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=3)
+    <!--<select id="selectProteinName" parameterType="List" resultType="String">-->
+        <!--select gene_symbol from proteins where gene_symbol in (-->
+        <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--)-->
+    <!--</select>-->
+    <select id="selectEnzymeByProteins" parameterType="Map" resultType="com.xhj.dddrug.pojo.Enzyme">
+        select DISTINCT * from enzyme where `type`=#{type} and del=1 and
+        (
+            ename in
+                (
+                    select pname from protein_enzyme where pname_e in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+                    and re_type=2 and `type`=#{type} and del=1
+                )
+          or ename in
+                (select pname_e from protein_enzyme where pname in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+                    and re_type=2 and `type`=#{type} and del=1
+                )
+        )
     </select>
-    <select id="selectDrugAndProtein" parameterType="String" resultType="com.xhj.dddrug.vo.DrugVo">
-        select dname,pname from drug_protein where dname=#{drugName}
+    <!--<select id="selectEnzymeByEnzyme" parameterType="List" resultType="String">-->
+        <!--select ename from enzyme where ename in (select pname from protein_enzyme where pname_e in (-->
+        <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--) and re_type=3)-->
+        <!--or ename in (select pname_e from protein_enzyme where pname in (-->
+        <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--) and re_type=3)-->
+    <!--</select>-->
+    <select id="selectDrugAndProtein" parameterType="com.xhj.dddrug.pojo.ResultDrug" resultType="com.xhj.dddrug.vo.DrugVo">
+        select DISTINCT * from drug_protein where dname=#{drugName} and `type`=#{type} and del=1
     </select>
-    <select id="selectProteinToProtein" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
-        select pname,pname_e from protein_enzyme where pname in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
+    <select id="selectProteinToProtein" parameterType="Map" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select DISTINCT * from protein_enzyme where pname in (
+          <foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>
         )
         and pname_e in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=1
+          <foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>
+        ) and re_type=1 and `type`=#{type} and del=1
     </select>
     <select id="selectProteinAndEnzyme" parameterType="java.util.HashMap" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
-        select * from protein_enzyme where (pname in (
-          <foreach collection="proteins" separator="," item="protein">#{protein}</foreach>
-        ) and pname_e in (
-          <foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>
-        ))
-        or (pname in (
-          <foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>
-        ) and pname_e in (
-          <foreach collection="proteins" separator="," item="protein">#{protein}</foreach>
-        ))
+        <!--select * from protein_enzyme where (pname in (-->
+          <!--<foreach collection="proteins" separator="," item="protein">#{protein}</foreach>-->
+        <!--) and pname_e in (-->
+          <!--<foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>-->
+        <!--))-->
+        <!--or (pname in (-->
+          <!--<foreach collection="enzymes" separator="," item="enzyme">#{enzyme}</foreach>-->
+        <!--) and pname_e in (-->
+          <!--<foreach collection="proteins" separator="," item="protein">#{protein}</foreach>-->
+        <!--))-->
+        select DISTINCT * from protein_enzyme where `type`=#{type} and del=1 and re_type=2
     </select>
-    <select id="selectEnzymeToEnzyme" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
-        select pname,pname_e from protein_enzyme where pname in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
-        )
-        and pname_e in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
-        ) and re_type=3
-    </select>
-    <select id="selectEnzymeMet" parameterType="List" resultType="com.xhj.dddrug.vo.EnzymeMetVo">
-        select ename,mname from enzyme_metabolites where ename in (
-          <foreach collection="list" separator="," item="item">#{item}</foreach>
+    <!--<select id="selectEnzymeToEnzyme" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">-->
+        <!--select pname,pname_e from protein_enzyme where pname in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--)-->
+        <!--and pname_e in (-->
+          <!--<foreach collection="list" separator="," item="item">#{item}</foreach>-->
+        <!--) and re_type=3-->
+    <!--</select>-->
+    <select id="selectEnzymeMet" parameterType="Map" resultType="com.xhj.dddrug.vo.EnzymeMetVo">
+        select DISTINCT * from enzyme_metabolites where `type`=#{type} and del=1 and ename in (
+          <foreach collection="data" separator="," item="item">#{item.ename}</foreach>
         )
     </select>
     <select id="listMetabolites" parameterType="map" resultType="com.xhj.dddrug.pojo.Metabolite">
-      SELECT * from metabolites
+      SELECT DISTINCT * from metabolites
       <where>
-          mname in
-          (<foreach collection="metabolites" separator="," item="item">#{item}</foreach>)
+          `type`=#{type} and del=1 and mname in
+          (<foreach collection="metabolites" separator="," item="item">#{item.mname}</foreach>)
       </where>
         <choose>
             <when test="order != null and order.sort != null and order.order != null">
@@ -119,10 +129,10 @@
         limit #{page.offset},#{page.rows}
     </select>
     <select id="listReferences" parameterType="map" resultType="com.xhj.dddrug.pojo.Reference">
-        SELECT * from reference
+        SELECT DISTINCT * from reference
         <where>
-            pmid in
-            (<foreach collection="references" separator="," item="item">#{item}</foreach>)
+            `type`=#{type} and del=1 and pmid in
+            (<foreach collection="references" separator="," item="item">#{item.pmid}</foreach>)
         </where>
         <choose>
             <when test="order != null and order.sort != null and order.order != null">

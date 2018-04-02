@@ -27,6 +27,7 @@
     <div style="width:700px;height:auto;margin: 20px auto;">
         <table id="dgItems"></table>
         <input type="hidden" id="drugName" value="${drugName}">
+        <input type="hidden" id="type" value="${type}">
     </div>
     <script>
         $("#dgItems").datagrid({
@@ -35,7 +36,7 @@
             //在设置分页属性的时候，初始化页面大小选择列表
             pageList:[10,20,50],
             //请求服务器端数据
-            url:'items/'+$('#drugName').val(),
+            url:'items/'+$('#drugName').val()+'/'+$('#type').val(),
             //请求方式，默认是POST
             method:'get',
             //是否显示分页工具栏

@@ -1,7 +1,7 @@
 <%--
   User: asus
-  Date: 2018/3/7
-  Time: 21:21
+  Date: 2018/3/25
+  Time: 22:24
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -9,6 +9,6 @@
     <title></title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/dealData.action">录入数据</a>
+success
 </body>
 </html>

@@ -10,6 +10,7 @@ public class Reference {
 
     private int rid;
     private String pmid;
+    private String type;
 
     public int getRid() {
         return rid;
@@ -27,11 +28,20 @@ public class Reference {
         this.pmid = pmid;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Reference{" +
                 "rid=" + rid +
                 ", pmid='" + pmid + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

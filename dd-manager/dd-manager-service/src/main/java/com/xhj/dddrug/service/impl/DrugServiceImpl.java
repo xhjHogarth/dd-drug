@@ -4,8 +4,7 @@ import com.xhj.dddrug.dao.DrugMapper;
 import com.xhj.dddrug.dto.Order;
 import com.xhj.dddrug.dto.Page;
 import com.xhj.dddrug.dto.Result;
-import com.xhj.dddrug.pojo.Metabolite;
-import com.xhj.dddrug.pojo.Reference;
+import com.xhj.dddrug.pojo.*;
 import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.utils.Link;
 import com.xhj.dddrug.utils.Node;
@@ -34,29 +33,40 @@ public class DrugServiceImpl implements DrugService{
 
 
     @Override
-    public List<String> selectProteins(String drugname) {
-        List<String> proteins = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+    public List<Protein> selectProteins(ResultDrug drug) {
+        List<Protein> proteins = new ArrayList<>();
+        List<Protein> data = new ArrayList<>();
         int size1 = 0;
         int size2 = 0;
-        data = drugDao.selectProteins(drugname);
+        data = drugDao.selectProteins(drug);
         size2 = data.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
         while (size2>size1){
-            List<String> temp = drugDao.selectProteinsByList(data);
+            map.put("data",data);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
             data = temp;
             size1 = size2;
             size2 = data.size();
         }
-        List<String> temp2 = drugDao.selectProteins(drugname);
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data.size();i++){
+            pname1.add(data.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
         for(int j=0;j<temp2.size();j++){
-            if(!data.contains(temp2.get(j))){
+            if(!pname1.contains(pname2.get(j))){
                 data.add(temp2.get(j));
             }
         }
 //        System.out.println("---------------------");
 //        System.out.println(data.toString());
 //        System.out.println("---------------------");
-        data = drugDao.selectProteinsPname(data);
+        //data = drugDao.selectProteinsPname(data);
         if(data.size()>=3){
             proteins.add(data.get(0));
             proteins.add(data.get(1));
@@ -69,44 +79,40 @@ public class DrugServiceImpl implements DrugService{
 
 
     @Override
-    public List<String> selectMetabolites(String drugName) {
-        List<String> metabolites = new ArrayList<>();
-        List<String> data1 = new ArrayList<>();
+    public List<Metabolite> selectMetabolites(ResultDrug drug) {
+        List<Metabolite> metabolites = new ArrayList<>();
+        List<Protein> data1 = new ArrayList<>();
         int size1 = 0;
         int size2 = 0;
-        data1 = drugDao.selectProteins(drugName);
+        data1 = drugDao.selectProteins(drug);
         size2 = data1.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
         while (size2>size1){
-            List<String> temp = drugDao.selectProteinsByList(data1);
+            map.put("data",data1);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
             data1 = temp;
             size1 = size2;
             size2 = data1.size();
         }
-        List<String> temp2 = drugDao.selectProteins(drugName);
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data1.size();i++){
+            pname1.add(data1.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
         for(int j=0;j<temp2.size();j++){
-            if(!data1.contains(temp2.get(j))){
+            if(!pname1.contains(pname2.get(j))){
                 data1.add(temp2.get(j));
             }
         }
-        List<String> enzymeNames1 = drugDao.selectEnzymeByProteins(data1);//通过所有的相关蛋白查到的直接有关系的所有酶
-//        int enzymeSize1 = 0;
-//        int enzymeSize2 = 0;
-//        enzymeSize2 = enzymeNames1.size();
-//        while(enzymeSize2>enzymeSize1){
-//            List<String> enzymeTemp1 = drugDao.selectEnzymeByEnzyme(enzymeNames1);
-//            enzymeNames1 = enzymeTemp1;
-//            enzymeSize1 = enzymeSize2;
-//            enzymeSize2 = enzymeNames1.size();
-//        }
-//        //经过while循环查找得到的酶是酶-酶对应关系的所有酶
-//        //通过下面的循环把通过相关蛋白-酶的对应关系找到的酶添加进来
-//        List<String> enzymeTemp2 = drugDao.selectEnzymeByProteins(data1);
-//        for(int i=0;i<enzymeTemp2.size();i++){
-//            if(!enzymeNames1.contains(enzymeTemp2.get(i))){
-//                enzymeNames1.add(enzymeTemp2.get(i));
-//            }
-//        }
-        List<String> data = drugDao.selectMetabolites(enzymeNames1);
+        map.put("data",data1);
+        List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+        map.put("data",enzymeNames1);
+        List<Metabolite> data = drugDao.selectMetabolites(map);
 //        System.out.println("-------------------");
 //        System.out.println(data.toString());
 //        System.out.println("-------------------");
@@ -121,9 +127,9 @@ public class DrugServiceImpl implements DrugService{
     }
 
     @Override
-    public List<String> selectReference(String drugName) {
-        List<String> references = new ArrayList<>();
-        List<String> data = drugDao.selectReference(drugName);
+    public List<Reference> selectReference(ResultDrug drug) {
+        List<Reference> references = new ArrayList<>();
+        List<Reference> data = drugDao.selectReference(drug);
         if(data.size()>=3){
             references.add(data.get(0));
             references.add(data.get(1));
@@ -135,27 +141,38 @@ public class DrugServiceImpl implements DrugService{
     }
 
     @Override
-    public String selectDrugBank(String drugName) {
-        return drugDao.selectDrugBank(drugName);
+    public String selectDrugBank(ResultDrug drug) {
+        return drugDao.selectDrugBank(drug);
     }
 
     @Override
-    public List<Node> setNodes(String drugName) {
+    public List<Node> setNodes(ResultDrug drug) {
         List<Node> nodes = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+        List<Protein> data = new ArrayList<>();
         int size1 = 0;
         int size2 = 0;
-        data = drugDao.selectProteins(drugName);
+        data = drugDao.selectProteins(drug);
         size2 = data.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
         while (size2>size1){
-            List<String> temp = drugDao.selectProteinsByList(data);
+            map.put("data",data);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
             data = temp;
             size1 = size2;
             size2 = data.size();
         }
-        List<String> temp2 = drugDao.selectProteins(drugName);
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data.size();i++){
+            pname1.add(data.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
         for(int j=0;j<temp2.size();j++){
-            if(!data.contains(temp2.get(j))){
+            if(!pname1.contains(pname2.get(j))){
                 data.add(temp2.get(j));
             }
         }
@@ -164,65 +181,62 @@ public class DrugServiceImpl implements DrugService{
         node1.setAttributes(null);
         node1.setSize(15);
         node1.setCategory(0);
-        node1.setName(drugName);
-        node1.setId(drugName);
+        node1.setName(drug.getDrugName());
+        node1.setId(drug.getDrugName());
         nodes.add(node1);
         //相关蛋白节点
-        List<String> proteinNames = drugDao.selectProteinName(data);
-        for (int i =0;i<proteinNames.size();i++){
+        //List<String> proteinNames = drugDao.selectProteinName(data);
+        for (int i =0;i<data.size();i++){
             Node node2 = new Node();
             node2.setAttributes(null);
             node2.setSize(15);
             node2.setCategory(1);
-            node2.setId(proteinNames.get(i));
-            node2.setName(proteinNames.get(i));
+            node2.setId(data.get(i).getGene_symbol());
+            node2.setName(data.get(i).getGene_symbol());
             nodes.add(node2);
         }
         //酶节点
-        List<String> enzymeNames1 = drugDao.selectEnzymeByProteins(data);//通过所有的相关蛋白查到的直接有关系的所有酶
-//        int enzymeSize1 = 0;
-//        int enzymeSize2 = 0;
-//        enzymeSize2 = enzymeNames1.size();
-//        while(enzymeSize2>enzymeSize1){
-//            List<String> enzymeTemp1 = drugDao.selectEnzymeByEnzyme(enzymeNames1);
-//            enzymeNames1 = enzymeTemp1;
-//            enzymeSize1 = enzymeSize2;
-//            enzymeSize2 = enzymeNames1.size();
-//        }
-//        //经过while循环查找得到的酶是酶-酶对应关系的所有酶
-//        //通过下面的循环把通过相关蛋白-酶的对应关系找到的酶添加进来
-//        List<String> enzymeTemp2 = drugDao.selectEnzymeByProteins(data);
-//        for(int i=0;i<enzymeTemp2.size();i++){
-//            if(!enzymeNames1.contains(enzymeTemp2.get(i))){
-//                enzymeNames1.add(enzymeTemp2.get(i));
-//            }
-//        }
-        //List<String> enzymeNames = drugDao.selectEnzymeName(data);
+        map.put("data",data);
+        List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+        for(int i =0;i<enzymeNames1.size();i++){
+            for(int j=0;j<data.size();j++){
+                if(enzymeNames1.get(i).getEname().equals(data.get(j).getGene_symbol())){
+                    Enzyme enzyme = enzymeNames1.get(i);
+                    enzyme.setType("cf");
+                    enzymeNames1.set(i,enzyme);
+                }
+            }
+        }
         for(int i=0;i<enzymeNames1.size();i++){
+            if("cf".equals(enzymeNames1.get(i).getType())){
+                continue;//因为存在同一个名字的酶和相关蛋白，遇到这样的把它当作相关蛋白
+                        //遇到，则跳过此次循环
+            }
             Node node3 = new Node();
             node3.setAttributes(null);
             node3.setSize(15);
             node3.setCategory(2);
-            node3.setId(enzymeNames1.get(i));
-            node3.setName(enzymeNames1.get(i));
+            node3.setId(enzymeNames1.get(i).getEname());
+            node3.setName(enzymeNames1.get(i).getEname());
             nodes.add(node3);
         }
         //代谢物节点
-        List<String> metaboliteNames = drugDao.selectMetabolites(enzymeNames1);
+        map.put("data",enzymeNames1);
+        List<Metabolite> metaboliteNames = drugDao.selectMetabolites(map);
         for(int i = 0;i<metaboliteNames.size();i++){
             Node node4 = new Node();
             node4.setAttributes(null);
             node4.setSize(15);
             node4.setCategory(3);
-            node4.setId(metaboliteNames.get(i));
-            node4.setName(metaboliteNames.get(i));
+            node4.setId(metaboliteNames.get(i).getMname());
+            node4.setName(metaboliteNames.get(i).getMname());
             nodes.add(node4);
         }
         return nodes;
     }
 
     @Override
-    public List<Link> setLinks(String drugName) {
+    public List<Link> setLinks(ResultDrug drug) {
         List<Link> links = new ArrayList<>();
         DrugVo drugVo = new DrugVo();
         ProteinEnzymeVo proteinEnzymeVo = new ProteinEnzymeVo();
@@ -230,7 +244,7 @@ public class DrugServiceImpl implements DrugService{
         ProteinEnzymeVo enzymeEnzymeVo = new ProteinEnzymeVo();
         EnzymeMetVo enzymeMetVo = new EnzymeMetVo();
         //查询得到药物-相关蛋白的关系
-        List<DrugVo> drugVos = drugDao.selectDrugAndProtein(drugName);
+        List<DrugVo> drugVos = drugDao.selectDrugAndProtein(drug);
         for(int i=0;i<drugVos.size();i++){
             Link link = new Link();
             drugVo = drugVos.get(i);
@@ -239,22 +253,36 @@ public class DrugServiceImpl implements DrugService{
             links.add(link);
         }
         //查询得到蛋白-蛋白的关系
-        List<String> data = drugDao.selectProteins(drugName);
+        List<Protein> data = new ArrayList<>();
         int size1 = 0;
-        int size2 = data.size();
+        int size2 = 0;
+        data = drugDao.selectProteins(drug);
+        size2 = data.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
         while (size2>size1){
-            List<String> temp = drugDao.selectProteinsByList(data);
+            map.put("data",data);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
             data = temp;
             size1 = size2;
             size2 = data.size();
         }
-        List<String> temp2 = drugDao.selectProteins(drugName);
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data.size();i++){
+            pname1.add(data.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
         for(int j=0;j<temp2.size();j++){
-            if(!data.contains(temp2.get(j))){
+            if(!pname1.contains(pname2.get(j))){
                 data.add(temp2.get(j));
             }
         }
-        List<ProteinEnzymeVo> proteinToProtein = drugDao.selectProteinToProtein(data);
+        map.put("data",data);
+        List<ProteinEnzymeVo> proteinToProtein = drugDao.selectProteinToProtein(map);
         for(int i = 0;i<proteinToProtein.size();i++){
             Link link = new Link();
             proteinProteinVo = proteinToProtein.get(i);
@@ -263,28 +291,12 @@ public class DrugServiceImpl implements DrugService{
             links.add(link);
         }
         //查询得到蛋白-酶的关系
-        List<String> enzymeNames1 = drugDao.selectEnzymeByProteins(data);//通过所有的相关蛋白查到的直接有关系的所有酶
-//        int enzymeSize1 = 0;
-//        int enzymeSize2 = 0;
-//        enzymeSize2 = enzymeNames1.size();
-//        while(enzymeSize2>enzymeSize1){
-//            List<String> enzymeTemp1 = drugDao.selectEnzymeByEnzyme(enzymeNames1);
-//            enzymeNames1 = enzymeTemp1;
-//            enzymeSize1 = enzymeSize2;
-//            enzymeSize2 = enzymeNames1.size();
-//        }
-//        //经过while循环查找得到的酶是酶-酶对应关系的所有酶
-//        //通过下面的循环把通过相关蛋白-酶的对应关系找到的酶添加进来
-//        List<String> enzymeTemp2 = drugDao.selectEnzymeByProteins(data);
-//        for(int i=0;i<enzymeTemp2.size();i++){
-//            if(!enzymeNames1.contains(enzymeTemp2.get(i))){
-//                enzymeNames1.add(enzymeTemp2.get(i));
-//            }
-//        }
-        Map<String,Object> proteinEnzymeMap = new HashMap<>();
-        proteinEnzymeMap.put("proteins",data);
-        proteinEnzymeMap.put("enzymes",enzymeNames1);
-        List<ProteinEnzymeVo> proteinEnzymeVos = drugDao.selectProteinAndEnzyme(proteinEnzymeMap);
+        map.put("data",data);
+        List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+//        Map<String,Object> proteinEnzymeMap = new HashMap<>();
+//        proteinEnzymeMap.put("proteins",data);
+//        proteinEnzymeMap.put("enzymes",enzymeNames1);
+        List<ProteinEnzymeVo> proteinEnzymeVos = drugDao.selectProteinAndEnzyme(map);
         for(int i = 0;i<proteinEnzymeVos.size();i++){
             Link link = new Link();
             proteinEnzymeVo = proteinEnzymeVos.get(i);
@@ -292,17 +304,9 @@ public class DrugServiceImpl implements DrugService{
             link.setTarget(proteinEnzymeVo.getPname_e());
             links.add(link);
         }
-        //查询得到酶-酶的关系
-//        List<ProteinEnzymeVo> enzymeEnzymeVos = drugDao.selectEnzymeToEnzyme(enzymeNames1);
-//        for(int i = 0;i<enzymeEnzymeVos.size();i++){
-//            Link link = new Link();
-//            enzymeEnzymeVo = enzymeEnzymeVos.get(i);
-//            link.setSource(enzymeEnzymeVo.getPname());
-//            link.setTarget(enzymeEnzymeVo.getPname_e());
-//            links.add(link);
-//        }
         //查询得到酶-代谢物的关系
-        List<EnzymeMetVo> enzymeMetVos = drugDao.selectEnzymeMet(enzymeNames1);
+        map.put("data",enzymeNames1);
+        List<EnzymeMetVo> enzymeMetVos = drugDao.selectEnzymeMet(map);
         for(int i=0;i<enzymeMetVos.size();i++){
             Link link = new Link();
             enzymeMetVo = enzymeMetVos.get(i);
@@ -314,58 +318,165 @@ public class DrugServiceImpl implements DrugService{
     }
 
     @Override
-    public Result<Metabolite> listMetabolites(String drugName, Page page, Order order) {
+    public Result<Metabolite> listMetabolites(ResultDrug drug, Page page, Order order) {
         Result<Metabolite> result = new Result<>();
         //查询所有的代谢物
-        List<String> metabolites = new ArrayList<>();
-        List<String> data1 = new ArrayList<>();
+        List<Protein> data1 = new ArrayList<>();
         int size1 = 0;
         int size2 = 0;
-        data1 = drugDao.selectProteins(drugName);
+        data1 = drugDao.selectProteins(drug);
         size2 = data1.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
         while (size2>size1){
-            List<String> temp = drugDao.selectProteinsByList(data1);
+            map.put("data",data1);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
             data1 = temp;
             size1 = size2;
             size2 = data1.size();
         }
-        List<String> temp2 = drugDao.selectProteins(drugName);
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data1.size();i++){
+            pname1.add(data1.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
         for(int j=0;j<temp2.size();j++){
-            if(!data1.contains(temp2.get(j))){
+            if(!pname1.contains(pname2.get(j))){
                 data1.add(temp2.get(j));
             }
         }
-        List<String> enzymeNames1 = drugDao.selectEnzymeByProteins(data1);//通过所有的相关蛋白查到的直接有关系的所有酶
-        metabolites = drugDao.selectMetabolites(enzymeNames1);
-        Map<String,Object> map = new HashMap<>();
-        map.put("metabolites",metabolites);
+        map.put("data",data1);
+        List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+        map.put("data",enzymeNames1);
+        List<Metabolite> data = drugDao.selectMetabolites(map);
+        map.put("metabolites",data);
         map.put("page",page);
         map.put("order",order);
         //查询总的记录条数
-        int total = metabolites.size();
+        int total = data.size();
         result.setTotal(total*1L);
         //查询指定页码的记录集合
         List<Metabolite> list = drugDao.listMetabolites(map);
         result.setRows(list);
-        System.out.println(result);
+        //System.out.println(result);
         return result;
     }
 
     @Override
-    public Result<Reference> listReferences(String drugName, Page page, Order order) {
+    public Result<Reference> listReferences(ResultDrug drug, Page page, Order order) {
         Result<Reference> result = new Result<>();
         Map<String,Object> map = new HashMap<>();
         //查询所有符合条件的文献编号
-        List<String> temp = drugDao.selectReference(drugName);
+        List<Reference> temp = drugDao.selectReference(drug);
         map.put("references",temp);
         map.put("page",page);
         map.put("order",order);
+        map.put("type",drug.getType());
         List<Reference> references = drugDao.listReferences(map);
         //总的记录条数
         int total = temp.size();
         result.setTotal(total*1L);
         //指定页码的记录集合
         result.setRows(references);
+        return result;
+    }
+
+    @Override
+    public Result<Link> listEdges(ResultDrug drug,Page page) {
+        Result<Link> result = new Result<>();
+        List<Link> links = new ArrayList<>();
+        DrugVo drugVo = new DrugVo();
+        ProteinEnzymeVo proteinEnzymeVo = new ProteinEnzymeVo();
+        ProteinEnzymeVo proteinProteinVo = new ProteinEnzymeVo();
+        ProteinEnzymeVo enzymeEnzymeVo = new ProteinEnzymeVo();
+        EnzymeMetVo enzymeMetVo = new EnzymeMetVo();
+        //查询得到药物-相关蛋白的关系
+        List<DrugVo> drugVos = drugDao.selectDrugAndProtein(drug);
+        for(int i=0;i<drugVos.size();i++){
+            Link link = new Link();
+            drugVo = drugVos.get(i);
+            link.setSource(drugVo.getDname());
+            link.setTarget(drugVo.getPname());
+            links.add(link);
+        }
+        //查询得到蛋白-蛋白的关系
+        List<Protein> data = new ArrayList<>();
+        int size1 = 0;
+        int size2 = 0;
+        data = drugDao.selectProteins(drug);
+        size2 = data.size();
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
+        while (size2>size1){
+            map.put("data",data);
+            List<Protein> temp = drugDao.selectProteinsByList(map);
+            data = temp;
+            size1 = size2;
+            size2 = data.size();
+        }
+        List<Protein> temp2 = drugDao.selectProteins(drug);
+        List<String> pname1 = new ArrayList<>();
+        List<String> pname2 = new ArrayList<>();
+        for(int i = 0;i<data.size();i++){
+            pname1.add(data.get(i).getGene_symbol());
+        }
+        for(int i = 0;i<temp2.size();i++){
+            pname2.add(temp2.get(i).getGene_symbol());
+        }
+        for(int j=0;j<temp2.size();j++){
+            if(!pname1.contains(pname2.get(j))){
+                data.add(temp2.get(j));
+            }
+        }
+        map.put("data",data);
+        List<ProteinEnzymeVo> proteinToProtein = drugDao.selectProteinToProtein(map);
+        for(int i = 0;i<proteinToProtein.size();i++){
+            Link link = new Link();
+            proteinProteinVo = proteinToProtein.get(i);
+            link.setSource(proteinProteinVo.getPname());
+            link.setTarget(proteinProteinVo.getPname_e());
+            links.add(link);
+        }
+        //查询得到蛋白-酶的关系
+        map.put("data",data);
+        List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+//        Map<String,Object> proteinEnzymeMap = new HashMap<>();
+//        proteinEnzymeMap.put("proteins",data);
+//        proteinEnzymeMap.put("enzymes",enzymeNames1);
+        List<ProteinEnzymeVo> proteinEnzymeVos = drugDao.selectProteinAndEnzyme(map);
+        for(int i = 0;i<proteinEnzymeVos.size();i++){
+            Link link = new Link();
+            proteinEnzymeVo = proteinEnzymeVos.get(i);
+            link.setSource(proteinEnzymeVo.getPname());
+            link.setTarget(proteinEnzymeVo.getPname_e());
+            links.add(link);
+        }
+        //查询得到酶-代谢物的关系
+        map.put("data",enzymeNames1);
+        List<EnzymeMetVo> enzymeMetVos = drugDao.selectEnzymeMet(map);
+        for(int i=0;i<enzymeMetVos.size();i++){
+            Link link = new Link();
+            enzymeMetVo = enzymeMetVos.get(i);
+            link.setSource(enzymeMetVo.getEname());
+            link.setTarget(enzymeMetVo.getMname());
+            links.add(link);
+        }
+        result.setTotal(links.size()*1L);
+        List<Link> limitLinks = new ArrayList<>();
+        if((page.getPage()*page.getRows()-links.size())<page.getRows() && (page.getPage()*page.getRows()-links.size())>0){
+            for (int i = page.getOffset();i<links.size();i++){
+                limitLinks.add(links.get(i));
+            }
+        }else{
+            for (int i = page.getOffset();i<(page.getRows()*page.getPage());i++){
+                limitLinks.add(links.get(i));
+            }
+        }
+        result.setRows(limitLinks);
         return result;
     }
 }

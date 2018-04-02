@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhj.dddrug.dao.DataMapper">
+    <insert id="enterDrug" parameterType="com.xhj.dddrug.pojo.Drug">
+        insert into drugs(dname,drugbank,`type`) VALUES
+        (#{dname},#{drugbank},#{type})
+    </insert>
+    <insert id="enterProtein" parameterType="com.xhj.dddrug.pojo.Protein">
+        insert into proteins(pname,gene_symbol,upkb,eg_id,`type`) VALUES
+        (#{pname},#{gene_symbol},#{upkb},#{eg_id},#{type})
+    </insert>
+    <select id="existProtein" parameterType="com.xhj.dddrug.pojo.Protein" resultType="int">
+        select count(*) from proteins where gene_symbol = #{gene_symbol}
+    </select>
+    <insert id="enterEnzyme" parameterType="com.xhj.dddrug.pojo.Enzyme">
+        insert into enzyme(`name`,ename,entrz_gene,`type`) VALUES
+        (#{name},#{ename},#{entrz_gene},#{type})
+    </insert>
+    <update id="updateEnzyme" parameterType="com.xhj.dddrug.pojo.Enzyme">
+        UPDATE enzyme set name = #{name} where ename = #{ename}
+    </update>
+    <select id="existEnzyme" parameterType="String" resultType="int">
+        select count(*) from enzyme where ename=#{ename}
+    </select>
+    <insert id="enterMetabolite" parameterType="com.xhj.dddrug.pojo.Metabolite">
+        insert into metabolites(mname,kc,hmdb,`type`) VALUES
+        (#{mname},#{kc},#{hmdb},#{type})
+    </insert>
+    <select id="existMetabolite" parameterType="com.xhj.dddrug.pojo.Metabolite" resultType="int">
+        select count(*) from metabolites where mname = #{mname}
+    </select>
+    <select id="selectPname" parameterType="String" resultType="String">
+        select gene_symbol from proteins where eg_id=#{pid} and `type` = "nephrotoxicity" and del=1
+    </select>
+    <insert id="enterDrugProtein" parameterType="com.xhj.dddrug.vo.DrugVo">
+        insert into drug_protein(dname, pname, `type`) VALUES
+        (#{dname},#{pname},#{type})
+    </insert>
+    <insert id="enterProteinProtein" parameterType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        insert into protein_enzyme(pname, pname_e,re_type,`type`) VALUES
+        (#{pname},#{pname_e},#{re_type},#{type})
+    </insert>
+    <select id="existProteinById" parameterType="String" resultType="int">
+        select count(*) from proteins where eg_id=#{pid1} and `type`="nephrotoxicity" and del=1
+    </select>
+    <select id="selectEname" parameterType="String" resultType="String">
+        select ename from enzyme where entrz_gene=#{pid2} and `type`="nephrotoxicity" and del=1
+    </select>
+    <select id="existEnzymeById" parameterType="String" resultType="int">
+        select count(*) from enzyme where entrz_gene=#{pid1} and `type`="nephrotoxicity" and del=1
+    </select>
+    <select id="selectMname" parameterType="String" resultType="String">
+        select mname from metabolites where kc=#{pid2} and `type`="nephrotoxicity"
+    </select>
+    <insert id="enterEnzymeMe" parameterType="com.xhj.dddrug.vo.EnzymeMetVo">
+        INSERT  into enzyme_metabolites(ename, mname, type) VALUES
+        (#{ename},#{mname},#{type})
+    </insert>
+    <insert id="enterDrugRef" parameterType="com.xhj.dddrug.vo.DrugRefVo">
+        insert into drug_reference(dname, pmid,`type`) VALUES
+        (#{dname},#{pmid},#{type})
+    </insert>
+</mapper>

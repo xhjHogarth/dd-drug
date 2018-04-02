@@ -2,13 +2,13 @@ package com.xhj.dddrug.vo;
 
 /**
  * User: asus
- * Date: 2018/1/31
- * Time: 18:31
+ * Date: 2018/3/29
+ * Time: 0:51
  * Version:V1.0
  */
-public class DrugVo {
+public class DrugRefVo {
     private String dname;
-    private String pname;
+    private String pmid;
     private String type;
 
     public String getDname() {
@@ -19,12 +19,12 @@ public class DrugVo {
         this.dname = dname;
     }
 
-    public String getPname() {
-        return pname;
+    public String getPmid() {
+        return pmid;
     }
 
-    public void setPname(String pname) {
-        this.pname = pname;
+    public void setPmid(String pmid) {
+        this.pmid = pmid;
     }
 
     public String getType() {
@@ -37,9 +37,9 @@ public class DrugVo {
 
     @Override
     public String toString() {
-        return "DrugVo{" +
+        return "DrugRefVo{" +
                 "dname='" + dname + '\'' +
-                ", pname='" + pname + '\'' +
+                ", pmid='" + pmid + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }

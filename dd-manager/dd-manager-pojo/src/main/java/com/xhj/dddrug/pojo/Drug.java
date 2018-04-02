@@ -10,6 +10,7 @@ public class Drug {
     private int did;
     private String dname;
     private String drugbank;
+    private String type;
 
     public int getDid() {
         return did;
@@ -35,12 +36,21 @@ public class Drug {
         this.drugbank = drugbank;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Drug{" +
                 "did=" + did +
                 ", dname='" + dname + '\'' +
                 ", drugbank='" + drugbank + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

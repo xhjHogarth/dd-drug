@@ -12,7 +12,7 @@ public class Protein {
     private String gene_symbol;
     private String upkb;
     private String eg_id;
-    private String typename;
+    private String type;
 
     public int getPid() {
         return pid;
@@ -55,11 +55,11 @@ public class Protein {
     }
 
     public String getType() {
-        return typename;
+        return type;
     }
 
-    public void setType(String typename) {
-        this.typename = typename;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -70,7 +70,9 @@ public class Protein {
                 ", gene_symbol='" + gene_symbol + '\'' +
                 ", upkb='" + upkb + '\'' +
                 ", eg_id='" + eg_id + '\'' +
-                ", typename='" + typename + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
+
+
 }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>NetWork</title>
+    <title>Graph</title>
     <%@include file="quote.jsp"%>
     <style>
         .top_ul{
@@ -16,14 +16,6 @@
             margin-left: 70px;
         }
     </style>
-    <script type="text/javascript">
-        function gotoData(drugName,type) {
-            window.location.href = "${pageContext.request.contextPath}/listData.action?drugName="+drugName+"&type="+type;
-        }
-        function gotoAnalysis() {
-
-        }
-    </script>
 </head>
 <body>
     <jsp:include page="top.jsp"/>
@@ -33,6 +25,12 @@
         <hr>
     </div>
     <div id="main" style="width: 940px;height: 800px;margin: 0 auto;margin-top: 30px"></div>
+    <div style="margin: 0 auto;width: 600px">
+        <h3 style="font-size: 25px;color: #C55A11">Information in the molecular network</h3>
+        <table id="dgItems" style="width: 600px;"></table>
+    </div>
+    <input type="hidden" id="pname" value="${pname}">
+    <input type="hidden" id="type" value="${type}">
     <script type="text/javascript">
         //基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -56,7 +54,7 @@
             series:[{
                 name:'',
                 type:'graph',
-                layout:'force',
+                layout:'circular',
                 data:graph.nodes,
                 links:graph.links,
                 categories:categories,
@@ -74,14 +72,28 @@
         }
         myChart.setOption(option);
     </script>
-    <div style="width: 940px;margin: 0 auto">
-        <input type="hidden" id="drugName" value="${drugName}">
-        <input type="hidden" id="type" value="${type}">
-        <input type="button" style="background-image: url(${pageContext.request.contextPath}/images/Data.jpg);
-                margin-left: 300px;width: 110px;height: 35px;" onclick="gotoData($('#drugName').val(),$('#type').val())">
-        <input type="button" style="background-image: url(${pageContext.request.contextPath}/images/Analysis.png);
-                margin-left: 100px;width: 140px;height: 35px;" onclick="gotoAnalysis()">
-    </div>
+    <script type="text/javascript">
+        $("#dgItems").datagrid({
+            //允许多列排序
+            multiSort:true,
+            //在设置分页属性的时候，初始化页面大小选择列表
+            pageList:[10,20,50],
+            //请求服务器端数据
+            url:'listEdges2/'+$('#pname').val()+'/'+$('#type').val(),
+            //请求方式，默认是POST
+            method:'get',
+            //是否显示分页工具栏
+            pagination: true,
+            fit: false,
+            //只能选中一个
+            singleSelect:true,
+            //列属性
+            columns:[[
+                {field:'source',title:'Node 1',width:300},
+                {field:'target',title:'Node 2',width:300}
+            ]]
+        });
+    </script>
     <div style="text-align: center;margin-top: 50px">
         <img src="${pageContext.request.contextPath}/images/bottom.png">
     </div>

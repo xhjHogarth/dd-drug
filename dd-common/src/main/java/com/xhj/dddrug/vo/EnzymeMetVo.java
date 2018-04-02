@@ -9,6 +9,7 @@ package com.xhj.dddrug.vo;
 public class EnzymeMetVo {
     private String ename;
     private String mname;
+    private String type;
 
     public String getEname() {
         return ename;
@@ -26,11 +27,20 @@ public class EnzymeMetVo {
         this.mname = mname;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "EnzymeMetVo{" +
                 "ename='" + ename + '\'' +
                 ", mname='" + mname + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

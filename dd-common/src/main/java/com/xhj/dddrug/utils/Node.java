@@ -13,6 +13,7 @@ public class Node {
     private String id;
     private int size;
     private int category;
+    private String type;
 
     public String getName() {
         return name;
@@ -52,5 +53,25 @@ public class Node {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "name='" + name + '\'' +
+                ", attributes=" + attributes +
+                ", id='" + id + '\'' +
+                ", size=" + size +
+                ", category=" + category +
+                ", type='" + type + '\'' +
+                '}';
     }
 }
