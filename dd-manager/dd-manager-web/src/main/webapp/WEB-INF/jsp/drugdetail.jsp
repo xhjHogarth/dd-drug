@@ -26,7 +26,8 @@
     <script>
         function showNetWork() {
             var drugName = $("#drugName").val();
-            window.location.href="${pageContext.request.contextPath}/drugGraph.action?drugName="+drugName;
+            var type = $('#type').val();
+            window.location.href="${pageContext.request.contextPath}/drugGraph.action?drugName="+drugName+"&type="+type;
         }
     </script>
 </head>

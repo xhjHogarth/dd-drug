@@ -9,9 +9,7 @@ import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
 import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.service.ProteinService;
-import com.xhj.dddrug.utils.Link;
-import com.xhj.dddrug.utils.Node;
-import com.xhj.dddrug.utils.PageBean;
+import com.xhj.dddrug.utils.*;
 import com.xhj.dddrug.vo.DrugVo;
 import com.xhj.dddrug.vo.EnzymeMetVo;
 import com.xhj.dddrug.vo.ProteinEnzymeVo;
@@ -117,7 +115,7 @@ public class ProteinServiceImpl implements ProteinService{
         for(int i = 0;i<drugList.size();i++){
             String drugbank = drugList.get(i).getDrugbank();
             String dname = drugList.get(i).getDname();
-            String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"margin-left: 50px\">"+drugbank+"</a>";
+            String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"margin-left: 50px;color: #C55A11\">"+drugbank+"</a>";
             Drug drug = new Drug();
             drug.setDrugbank(str);
             drug.setDname(dname);
@@ -134,18 +132,25 @@ public class ProteinServiceImpl implements ProteinService{
         Protein protein = (Protein) map.get("data");
         //药物节点
         List<Drug> drugs = proteinDao.selectDrugs(map);
-        for (Drug drug:drugs) {
+        double[][] xy1 = RandomXY.getXY(drugs.size());
+        for (int i=0;i<drugs.size();i++) {
             Node node1 = new Node();
-            node1.setAttributes(null);
+            Attributes attributes = new Attributes();
+            attributes.setX(xy1[i][0]);
+            attributes.setY(70+xy1[i][1]);
+            node1.setAttributes(attributes);
             node1.setSize(15);
             node1.setCategory(0);
-            node1.setName(drug.getDname());
-            node1.setId(drug.getDname());
+            node1.setName(drugs.get(i).getDname());
+            node1.setId(drugs.get(i).getDname());
             nodes.add(node1);
         }
         //相关蛋白节点
         Node node2 = new Node();
-        node2.setAttributes(null);
+        Attributes attributes = new Attributes();
+        attributes.setX(250);
+        attributes.setY(70);
+        node2.setAttributes(attributes);
         node2.setSize(15);
         node2.setCategory(1);
         node2.setName(protein.getGene_symbol());
@@ -153,6 +158,7 @@ public class ProteinServiceImpl implements ProteinService{
         nodes.add(node2);
         //酶节点
         List<Enzyme> enzymes = proteinDao.selectEnzyme(map);
+        double[][] xy3 = RandomXY.getXY(enzymes.size());
         for (int i = 0;i<enzymes.size();i++){
             if(protein.getGene_symbol().equals(enzymes.get(i).getEname())){
                 enzymes.get(i).setEname("cf");
@@ -163,7 +169,10 @@ public class ProteinServiceImpl implements ProteinService{
                 continue;
             }
             Node node3 = new Node();
-            node3.setAttributes(null);
+            Attributes attributes1 = new Attributes();
+            attributes1.setX(500+xy3[i][0]);
+            attributes1.setY(70+xy3[i][1]);
+            node3.setAttributes(attributes1);
             node3.setSize(15);
             node3.setCategory(2);
             node3.setName(enzymes.get(i).getEname());
@@ -173,9 +182,13 @@ public class ProteinServiceImpl implements ProteinService{
         //代谢物节点
         map.put("data",enzymes);
         List<Metabolite> metabolites = proteinDao.selectMetabolites(map);
+        double[][] xy4 = RandomXY.getXY(metabolites.size());
         for (int i = 0;i<metabolites.size();i++){
             Node node4 = new Node();
-            node4.setAttributes(null);
+            Attributes attributes1 = new Attributes();
+            attributes1.setX(900+xy4[i][0]);
+            attributes1.setY(70+xy4[i][1]);
+            node4.setAttributes(attributes1);
             node4.setSize(15);
             node4.setCategory(3);
             node4.setName(metabolites.get(i).getMname());

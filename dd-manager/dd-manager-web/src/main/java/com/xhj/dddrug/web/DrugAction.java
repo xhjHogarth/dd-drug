@@ -42,17 +42,13 @@ public class DrugAction {
         List<Reference> references = drugService.selectReference(resultDrug);
         resultDrug.setReferences(references);
         request.setAttribute("resultDrug",resultDrug);
-//        System.out.println("-----------------------");
-//        System.out.println(resultDrug);
-//        System.out.println("-----------------------");
         return "drugdetail";
     }
 
     @RequestMapping("/drugGraph.action")
     public String drugGraph(HttpServletRequest request){
-        //String drugName = "Acetaminophen";
         String drugName = request.getParameter("drugName");
-        String type = "hepatotoxicity";
+        String type = request.getParameter("type");
         ResultDrug resultDrug = new ResultDrug();
         resultDrug.setDrugName(drugName);
         resultDrug.setType(type);
@@ -64,9 +60,7 @@ public class DrugAction {
         String graphStr = JsonUtils.objectToJson(graph);
         request.setAttribute("drugName",drugName);
         request.setAttribute("graph",graphStr);
-        //request.setAttribute("drugName",drugName);
         request.setAttribute("type",type);
-        //System.out.println(graphStr);
         return "drugGraph";
     }
 }

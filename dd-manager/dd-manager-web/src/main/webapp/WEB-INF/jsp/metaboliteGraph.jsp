@@ -24,19 +24,22 @@
         <h3 style="display: inline;vertical-align: bottom;margin-left: 300px;font-size: 30px;color: #C55A11">NetWork</h3>
         <hr>
     </div>
-    <div id="main" style="width: 940px;height: 500px;margin: 0 auto;margin-top: 30px"></div>
+    <div id="main" style="width: 1200px;height: 500px;margin: 30px auto;"></div>
     <div style="margin: 0 auto;width: 600px">
         <h3 style="font-size: 25px;color: #C55A11">Information in the molecular network</h3>
         <table id="dgItems" style="width: 600px;"></table>
     </div>
-    <input type="hidden" id="pname" value="${pname}">
+    <input type="hidden" id="mname" value="${mname}">
     <input type="hidden" id="type" value="${type}">
     <script type="text/javascript">
         //基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
         var graph = ${graph};
         myChart.hideLoading();
-        var categories = [{name:'Drug'},{name:'Protein'},{name:'Enzyme'},{name:'Metabolite'}];
+        var categories = [{name:'Drug'},
+            {name:'Protein'},
+            {name:'Enzyme'},
+            {name:'Metabolite'}];
         graph.nodes.forEach(function (node) {
             node.itemStyle = null;
             node.symbolSize = node.size;
@@ -81,7 +84,7 @@
             //在设置分页属性的时候，初始化页面大小选择列表
             pageList:[10,20,50],
             //请求服务器端数据
-            url:'listEdges2/'+$('#pname').val()+'/'+$('#type').val(),
+            url:'listEdges3/'+$('#mname').val()+'/'+$('#type').val(),
             //请求方式，默认是POST
             method:'get',
             //是否显示分页工具栏

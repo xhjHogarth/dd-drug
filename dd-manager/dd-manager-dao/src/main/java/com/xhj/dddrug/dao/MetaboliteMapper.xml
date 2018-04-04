@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhj.dddrug.dao.MetaboliteMapper">
+    <select id="selectEnzyme" parameterType="Map" resultType="com.xhj.dddrug.pojo.Enzyme">
+        select DISTINCT ename,entrz_gene,`type` from enzyme where `type`=#{type} and del=1 and ename IN
+        (select ename from enzyme_metabolites where mname=#{data.mname} and del=1 and `type`=#{type})
+    </select>
+    <select id="selectProtein" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select DISTINCT pname,gene_symbol,eg_id,upkb,`type` from proteins where `type`=#{type} and del=1 and
+        gene_symbol in (select pname from protein_enzyme where `type`=#{type} and del=1 and re_type=2 and
+        pname_e in (<foreach collection="data" separator="," item="item">#{item.ename}</foreach>)
+        )
+    </select>
+    <select id="selectDrug" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank from drugs where `type`=#{type} and del=1 and dname in
+        (
+            select dname from drug_protein where `type`=#{type} and del=1 and pname in
+            (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+        )
+    </select>
+    <select id="selectDrugByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank from drugs where `type`=#{type} and del=1 and dname in
+        (
+        select dname from drug_protein where `type`=#{type} and del=1 and pname in
+        (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
+        )
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by did asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
+    </select>
+    <select id="selectProteinByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select DISTINCT pname,gene_symbol,eg_id,upkb,`type` from proteins where `type`=#{type} and del=1 and
+            gene_symbol in (select pname from protein_enzyme where `type`=#{type} and del=1 and re_type=2 and
+            pname_e in (<foreach collection="data" separator="," item="item">#{item.ename}</foreach>)
+        )
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by pid asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
+    </select>
+    <select id="selectDrugProtein" parameterType="Map" resultType="com.xhj.dddrug.vo.DrugVo">
+        select dname,pname,`type` from drug_protein where `type`=#{type} and del=1 and
+        dname in (<foreach collection="drugs" separator="," item="drug">#{drug.dname}</foreach>) and
+        pname in (<foreach collection="proteins" separator="," item="protein">#{protein.gene_symbol}</foreach>)
+    </select>
+    <select id="selectProteinProtein" parameterType="Map" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select pname,pname_e,type from protein_enzyme where re_type=1 and type=#{type} and del=1 and
+        pname in (<foreach collection="proteins" separator="," item="protein">#{protein.gene_symbol}</foreach>) and
+        pname_e in (<foreach collection="proteins" separator="," item="protein">#{protein.gene_symbol}</foreach>)
+    </select>
+    <select id="selectProteinEnzyme" parameterType="Map" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+        select pname,pname_e,type from protein_enzyme where re_type=2 and type=#{type} and del=1 and
+        pname in (<foreach collection="proteins" separator="," item="protein">#{protein.gene_symbol}</foreach>) and
+        pname_e in (<foreach collection="enzymes" separator="," item="enzyme">#{enzyme.ename}</foreach>)
+    </select>
+    <select id="selectEnzymeMetabolite" parameterType="Map" resultType="com.xhj.dddrug.vo.EnzymeMetVo">
+        select ename,mname,type from enzyme_metabolites where type=#{type} and del=1 and
+        ename in (<foreach collection="enzymes" separator="," item="enzyme">#{enzyme.ename}</foreach>) and mname=#{data.mname}
+    </select>
+</mapper>
