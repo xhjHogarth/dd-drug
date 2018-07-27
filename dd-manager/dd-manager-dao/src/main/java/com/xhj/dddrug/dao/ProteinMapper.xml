@@ -41,7 +41,7 @@
         )
     </select>
     <select id="listDrugs" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
-        select DISTINCT dname,drugbank,`type` from drugs where `type`=#{type} and del=1 and dname in(
+        select DISTINCT did,dname,drugbank,`type` from drugs where `type`=#{type} and del=1 and dname in(
           select DISTINCT dname from drug_protein where `type`=#{type} and del=1 and pname=#{data.gene_symbol}
         )
         <choose>
@@ -67,7 +67,7 @@
         (<foreach collection="data" separator="," item="item">#{item.ename}</foreach>)
     </select>
     <select id="selectMetabolitesByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
-        select DISTINCT mname,hmdb,kc,type from metabolites where `type`=#{type} and del=1 and mname in (
+        select DISTINCT mid,mname,hmdb,kc,type from metabolites where `type`=#{type} and del=1 and mname in (
             select DISTINCT mname from enzyme_metabolites where `type`=#{type} and del=1 and ename in
             (
               <foreach collection="data" separator="," item="item">#{item.ename}</foreach>
@@ -84,5 +84,8 @@
             </otherwise>
         </choose>
         limit #{page.offset},#{page.rows}
+    </select>
+    <select id="selectProtein" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select pname,gene_symbol,eg_id,upkb,type from proteins where del=1 and type=#{type} and gene_symbol=#{gene_symbol}
     </select>
 </mapper>

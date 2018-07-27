@@ -13,7 +13,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
     </style>
 </head>

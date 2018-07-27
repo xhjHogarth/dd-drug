@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class MetaboliteServiceImpl implements MetaboliteService{
 
     @Autowired
     public MetaboliteMapper metaboliteDao;
+
+    public static String webName = "HNepTox";
 
     @Override
     public ResultMetabolite listMetabolite(Map<String, Object> map,ResultMetabolite resultMetabolite) {
@@ -88,7 +91,7 @@ public class MetaboliteServiceImpl implements MetaboliteService{
             }else {
                 String drugbank = drugList.get(i).getDrugbank();
                 String dname = drugList.get(i).getDname();
-                String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"margin-left: 50px;color: #C55A11\">"+drugbank+"</a>";
+                String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"color: #C55A11\">"+drugbank+"</a>";
                 Drug drug = new Drug();
                 drug.setDrugbank(str);
                 drug.setDname(dname);
@@ -331,5 +334,15 @@ public class MetaboliteServiceImpl implements MetaboliteService{
         result.setTotal(links.size()*1L);
         result.setRows(linkList);
         return result;
+    }
+
+    @Override
+    public Metabolite selectMetabolie(String mname, String type) {
+        Metabolite metabolite = new Metabolite();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",mname);
+        map.put("type",type);
+        metabolite = metaboliteDao.selectMetabolie(map);
+        return metabolite;
     }
 }

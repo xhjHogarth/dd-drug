@@ -43,4 +43,5 @@
     <mvc:resources mapping="/css/**" location="/css/"/>
     <!--图片文件-->
     <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/download/**" location="/download/"/>
 </beans>

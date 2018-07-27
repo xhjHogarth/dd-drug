@@ -13,6 +13,7 @@ public class Metabolite {
     private String hmdb;
     private String kc;
     private String type;
+    private String drugType;
 
     public int getMid() {
         return mid;
@@ -54,6 +55,14 @@ public class Metabolite {
         this.type = type;
     }
 
+    public String getDrugType() {
+        return drugType;
+    }
+
+    public void setDrugType(String drugType) {
+        this.drugType = drugType;
+    }
+
     @Override
     public String toString() {
         return "Metabolite{" +
@@ -62,6 +71,7 @@ public class Metabolite {
                 ", hmdb='" + hmdb + '\'' +
                 ", kc='" + kc + '\'' +
                 ", type='" + type + '\'' +
+                ", drugType='" + drugType + '\'' +
                 '}';
     }
 }

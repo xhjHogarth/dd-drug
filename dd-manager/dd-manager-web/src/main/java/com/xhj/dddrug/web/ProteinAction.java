@@ -39,21 +39,26 @@ public class ProteinAction {
     @RequestMapping("/proteinDetail.action")
     public String proteinDetail(HttpServletRequest request){
         ResultProtein resultProtein = new ResultProtein();
-        Protein protein = new Protein();
-        protein.setPname("Glycogen synthase kinase 3 beta");
-        protein.setGene_symbol("GSK3B");
-        protein.setType("hepatotoxicity");
-        protein.setUpkb("P00390");
+        String type = request.getParameter("type");
+        String gene_symbol = request.getParameter("gene_symbol");
+        //先根据相关蛋白的简称和药物的类型，把相关蛋白的所有信息查到
+        Protein protein = proteinService.selectProtein(type,gene_symbol);
         resultProtein.setProtein(protein);
+        //根据相关蛋白去查找所有的药物和代谢物
         Map<String,Object> map = new HashMap<>();
         map.put("type",protein.getType());
         map.put("data",protein);
         List<Drug> drugs = proteinService.selectDrugs(map);
         resultProtein.setDrugs(drugs);
-        List<Metabolite> metabolites = proteinService.selectMetabolites(map);
-        resultProtein.setMetabolites(metabolites);
-        request.setAttribute("resultProtein",resultProtein);
-        return "proteinDetail";
+        try {
+            List<Metabolite> metabolites = proteinService.selectMetabolites(map);
+            resultProtein.setMetabolites(metabolites);
+            request.setAttribute("resultProtein",resultProtein);
+            return "proteinDetail";
+        } catch (Exception e) {
+            request.setAttribute("resultProtein",resultProtein);
+            return "proteinDetailError";
+        }
     }
 
     @RequestMapping("listDrugs.action")
@@ -76,9 +81,9 @@ public class ProteinAction {
         map.put("type",type);
         map.put("page",page);
         map.put("order",order);
-        System.out.println("--------------");
-        System.out.println(map.toString());
-        System.out.println("--------------");
+//        System.out.println("--------------");
+//        System.out.println(map.toString());
+//        System.out.println("--------------");
         Result<Drug> result = proteinService.selectDrugsByPage(map);
         return result;
     }

@@ -14,7 +14,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
         a{
             color: #CF5A11;
@@ -34,12 +34,13 @@
 <body>
     <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto;">
-        <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png">
+        <img id="typeImg" style="display: inline">
+        <h3 style="margin-left: 150px;display: inline;font-size: 25px;color: #C55A11;vertical-align: bottom">Search Result - ${resultProtein.protein.pname}</h3>
     </div>
     <table border="1px" align="center" style="margin-top: 2%;width: 600px">
         <tr>
             <td align="center" width="100px" style="font-weight: bold">Related Protein</td>
-            <td width="300px"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${resultProtein.protein.eg_id}">${resultProtein.protein.pname}</a></td>
+            <td width="300px"><a style="margin-left: 20px" href="https://www.ncbi.nlm.nih.gov/gene/?term=${resultProtein.protein.eg_id}">${resultProtein.protein.pname}</a></td>
         </tr>
         <tr>
             <td colspan="2" style="background-color: #DEEBF7;font-weight: bold" align="center">Drugs</td>
@@ -73,5 +74,14 @@
     <div style="text-align: center;margin-top: 50px">
         <img src="${pageContext.request.contextPath}/images/bottom.png">
     </div>
+    <script>
+        var type = $('#type').val();
+        if("hepatotoxicity" == type){
+            $('#typeImg').attr("src","images/Hepatotoxicity.png");
+        }
+        if("nephrotoxicity" == type){
+            $('#typeImg').attr("src","images/Nephrotoxicity.jpg");
+        }
+    </script>
 </body>
 </html>

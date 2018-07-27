@@ -27,4 +27,6 @@ public interface MetaboliteService {
     public List<Link> setLinks(Map<String, Object> map, Metabolite metabolite);
 
     public Result<Link> listEdgeByPage(Map<String, Object> map,Metabolite metabolite);
+
+    public Metabolite selectMetabolie(String mname, String type);
 }

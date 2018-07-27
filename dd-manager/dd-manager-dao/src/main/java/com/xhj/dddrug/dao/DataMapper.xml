@@ -60,4 +60,16 @@
         insert into drug_reference(dname, pmid,`type`) VALUES
         (#{dname},#{pmid},#{type})
     </insert>
+    <insert id="enterDrugMet" parameterType="com.xhj.dddrug.vo.DrugMetVo">
+        insert into drug_metabolite_type(dname, kc, type, drugType) VALUES
+        (#{dname},#{kc},#{type},#{drugType})
+    </insert>
+    <select id="selectDrugs" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,type from drugs where del=1 and type=#{type} and dname not in
+        (select DISTINCT dname from drug_metabolite_type where del=1 and drugType=#{type})
+    </select>
+    <select id="selectDrugsFromDrugAndMet" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,type from drugs where del=1 and type=#{type} and dname in
+        (select DISTINCT dname from drug_metabolite_type where del=1 and drugType=#{type})
+    </select>
 </mapper>

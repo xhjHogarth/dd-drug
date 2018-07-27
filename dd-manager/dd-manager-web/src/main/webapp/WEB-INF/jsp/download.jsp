@@ -13,7 +13,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
     </style>
 </head>
@@ -36,45 +36,30 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td rowspan="4" style="vertical-align: middle">Related proteins</td>
+                        <td rowspan="2" style="vertical-align: middle">Related proteins</td>
                         <td>Drug-included hepatotoxicity</td>
-                        <td><a href="#">Download</a></td>
-                    </tr>
-                    <tr>
-                        <td>Herb-included hepatotoxicity</td>
-                        <td><a href="#">Download</a></td>
+                        <td><a href="${pageContext.request.contextPath}/download.action?fileName=proteinH">Download</a></td>
                     </tr>
                     <tr>
                         <td>Drug-included nephrotoxicity</td>
-                        <td><a href="#">Download</a></td>
+                        <td><a href="${pageContext.request.contextPath}/download.action?fileName=proteinN">Download</a></td>
                     </tr>
                     <tr>
-                        <td>Herb-included nephrotoxicity</td>
-                        <td><a href="#">Download</a></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="4" style="vertical-align: middle">Metabolites</td>
+                        <td rowspan="2" style="vertical-align: middle">Differential metabolites</td>
                         <td>Drug-included hepatotoxicity</td>
-                        <td><a href="#">Download</a></td>
-                    </tr>
-                    <tr>
-                        <td>Herb-included hepatotoxicity</td>
-                        <td><a href="#">Download</a></td>
+                        <td><a href="${pageContext.request.contextPath}/download.action?fileName=metaboliteH">Download</a></td>
                     </tr>
                     <tr>
                         <td>Drug-included nephrotoxicity</td>
-                        <td><a href="#">Download</a></td>
+                        <td><a href="${pageContext.request.contextPath}/download.action?fileName=metaboliteN">Download</a></td>
                     </tr>
-                    <tr>
-                        <td>Herb-included nephrotoxicity</td>
-                        <td><a href="#">Download</a></td>
-                    </tr>
+                    <tr><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div style="text-align: center;margin-top: 100px">
+    <div style="text-align: center;margin-top: 200px">
         <img src="${pageContext.request.contextPath}/images/bottom.png">
     </div>
 </div>

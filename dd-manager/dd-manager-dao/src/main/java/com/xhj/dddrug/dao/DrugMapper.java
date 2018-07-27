@@ -48,4 +48,14 @@ public interface DrugMapper {
     public List<Metabolite> listMetabolites(Map<String, Object> map);
 
     public List<Reference> listReferences(Map<String, Object> map);
+
+    public List<Drug> drugBrowseAll(Map<String, Object> map);
+
+    public List<Drug> drugBrowseByPage(Map<String, Object> map);
+
+    public List<Protein> listProteinsByPage(Map<String, Object> map);
+
+    public int countDrugMetabolite(Map<String, Object> map);
+
+    public String selectType(Map<String, Object> map);
 }

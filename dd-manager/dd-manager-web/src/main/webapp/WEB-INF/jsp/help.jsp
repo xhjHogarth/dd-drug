@@ -13,7 +13,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
         dt{
             font-size: 20px;
@@ -33,30 +33,35 @@
         <div class="row clearfix">
             <div class="col-md-12 column">
                 <dl>
-                    <dt>
-                        1. Where are the data from?
+                    <dt style="margin-top: 10px">
+                        1. Where are the data derived from?
                     </dt>
-                    <dd>
-                        The drugs, related proteins, or differential metabolites were derived from text mining for related<br>
-                        PubMed references. Besides, the molecular network of  drug hepatotoxicity or nephrotoxicity is made<br>
-                        by the BisoGenet and MetScape which  are both the plugins of Cytoscape software.
+                    <dd style="word-wrap: break-word">
+                        The drugs, related proteins, or differential metabolites were derived from text mining in related PubMed references. Based on the protein-protein or metabolic enzyme-metabolite interactions, a molecular network of drug-induced hepatotoxicity or nephrotoxicity is constructed. According to the molecular network, some metabolites are speculated for an interested drug with hepatotoxicity or nephrotoxicity.
                     </dd>
-                    <dt>
-                        2. How can I download the data? Is it free ?
+                    <dt style="margin-top: 15px">
+                        2. How to search the data ?
                     </dt>
-                    <dd>
-                        The  data of HNepTox is freely downable. But the registration is required for user before downloading<br>
-                        the data. The database allows user to download the full dataset by the Download page or selected<br>
-                        records by embed download function in formats like CSV, TXT, and XLX.
+                    <dd style="word-wrap: break-word">
+                        HNepTox is fully searchable by the drug name, DrugBank ID, protein name, gene symbol, UniProt ID, gene ID, metabolite name, HMDB ID or KEGG ID. Users also use the few letters followed by * for a wild searching, e.g. aceto*. To match a string exactly, please place quotes around your search term. e.g. “acetosalicylic acid”. HNepTox may also be browsed.
                     </dd>
-                    <dt>
-                        3. How to search the data ?
+                    <dt style="margin-top: 15px">
+                        3. How to obtain and manipulate the molecular network？
                     </dt>
-                    <dd>
-                        The search box accepts different keywords, including drug name, DrugBank ID, protein name, gene<br>
-                        symbol, UniProt ID, gene ID, metabolite name, HMDB ID and KEGG ID. Users  also use the few<br>
-                        letters followed by * for a wild searching, e.g. aceto*. To match a string exactly, please place quotes<br>
-                        around your search term. e.g. ”acetosalicylic acid ”. Users can browse the data through drug.
+                    <dd style="word-wrap: break-word">
+                        The user can obtain a molecular network about the query object by clicking on "Show Network". By clicking on the buttons of "Drug", "Related Protein", "Enzyme" or "Metabolite" in the top of network, the corresponding substance will be displayed or hidden. In the network, clicking a node will highlight all its adjacent nodes.
+                    </dd>
+                    <dt style="margin-top: 15px">
+                        4. How to download the data? Is it free ?
+                    </dt>
+                    <dd style="word-wrap: break-word">
+                        The data in HNepTox is freely downloadable. But the registration is required for user before downloading the data. The database allows user to download the full dataset by the “Download” page or selected records by the embed download function in xlsx format.
+                    </dd>
+                    <dt style="margin-top: 15px">
+                        5. How to submit the data or suggestions？
+                    </dt>
+                    <dd style="word-wrap: break-word">
+                        In the “Submit” page, you firstly choose “Hepatotoxicity” or “Nephrotoxicity”, then fill the drug, related protein or differential metabolite, then provide the PMID of the reference which the data derived from, and finally click “Submit” to submit data. You can directly fill and submit your suggestions. According to the data or suggestions submitted by you, we will improve the HNepTox database as soon as possible.
                     </dd>
                 </dl>
             </div>

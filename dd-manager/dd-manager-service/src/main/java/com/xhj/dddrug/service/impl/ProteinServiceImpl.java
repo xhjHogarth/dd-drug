@@ -7,7 +7,6 @@ import com.xhj.dddrug.pojo.Drug;
 import com.xhj.dddrug.pojo.Enzyme;
 import com.xhj.dddrug.pojo.Metabolite;
 import com.xhj.dddrug.pojo.Protein;
-import com.xhj.dddrug.service.DrugService;
 import com.xhj.dddrug.service.ProteinService;
 import com.xhj.dddrug.utils.*;
 import com.xhj.dddrug.vo.DrugVo;
@@ -33,6 +32,8 @@ public class ProteinServiceImpl implements ProteinService{
 
     @Autowired
     public ProteinMapper proteinDao;
+
+    public static String webName = "HNepTox";
 
     @Override
     public PageBean<Protein> selectProteins(QueryVo vo) {
@@ -115,7 +116,7 @@ public class ProteinServiceImpl implements ProteinService{
         for(int i = 0;i<drugList.size();i++){
             String drugbank = drugList.get(i).getDrugbank();
             String dname = drugList.get(i).getDname();
-            String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"margin-left: 50px;color: #C55A11\">"+drugbank+"</a>";
+            String str = "<a href=\"https://www.drugbank.ca/drugs/"+drugbank+"\" style=\"color: #C55A11\">"+drugbank+"</a>";
             Drug drug = new Drug();
             drug.setDrugbank(str);
             drug.setDname(dname);
@@ -313,5 +314,15 @@ public class ProteinServiceImpl implements ProteinService{
         result.setTotal(links.size()*1L);
         result.setRows(linkList);
         return result;
+    }
+
+    @Override
+    public Protein selectProtein(String type, String gene_symbol) {
+        Protein protein= new Protein();
+        Map<String,Object> map = new HashMap<>();
+        map.put("gene_symbol",gene_symbol);
+        map.put("type",type);
+        protein = proteinDao.selectProtein(map);
+        return protein;
     }
 }

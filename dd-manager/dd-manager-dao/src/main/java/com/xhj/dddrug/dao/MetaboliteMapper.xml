@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xhj.dddrug.dao.MetaboliteMapper">
+    <select id="selectMetabolie" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select mname,hmdb,kc,type from metabolites where del=1 and type=#{type} and mname=#{data}
+    </select>
     <select id="selectEnzyme" parameterType="Map" resultType="com.xhj.dddrug.pojo.Enzyme">
         select DISTINCT ename,entrz_gene,`type` from enzyme where `type`=#{type} and del=1 and ename IN
         (select ename from enzyme_metabolites where mname=#{data.mname} and del=1 and `type`=#{type})
@@ -19,7 +22,7 @@
         )
     </select>
     <select id="selectDrugByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
-        select dname,drugbank from drugs where `type`=#{type} and del=1 and dname in
+        select did,dname,drugbank from drugs where `type`=#{type} and del=1 and dname in
         (
         select dname from drug_protein where `type`=#{type} and del=1 and pname in
         (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
@@ -37,7 +40,7 @@
         limit #{page.offset},#{page.rows}
     </select>
     <select id="selectProteinByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
-        select DISTINCT pname,gene_symbol,eg_id,upkb,`type` from proteins where `type`=#{type} and del=1 and
+        select DISTINCT pid,pname,gene_symbol,eg_id,upkb,`type` from proteins where `type`=#{type} and del=1 and
             gene_symbol in (select pname from protein_enzyme where `type`=#{type} and del=1 and re_type=2 and
             pname_e in (<foreach collection="data" separator="," item="item">#{item.ename}</foreach>)
         )

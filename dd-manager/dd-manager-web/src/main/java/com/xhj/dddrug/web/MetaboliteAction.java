@@ -36,16 +36,24 @@ public class MetaboliteAction {
         ResultMetabolite resultMetabolite = new ResultMetabolite();
         Metabolite metabolite = new Metabolite();
         Map<String,Object> map = new HashMap<>();
-        metabolite.setMname("Acetate");
-        metabolite.setType("hepatotoxicity");
-        metabolite.setHmdb("HMDB0000042");
-        metabolite.setKc("C00033");
+//        metabolite.setMname("Acetate");
+//        metabolite.setType("hepatotoxicity");
+//        metabolite.setHmdb("HMDB0000042");
+//        metabolite.setKc("C00033");
+        String mname = request.getParameter("mname");
+        String type = request.getParameter("type");
+        metabolite = metaboliteService.selectMetabolie(mname,type);
         map.put("data",metabolite);
         map.put("type",metabolite.getType());
         resultMetabolite.setMetabolite(metabolite);
-        resultMetabolite = metaboliteService.listMetabolite(map,resultMetabolite);
-        request.setAttribute("resultMetabolite",resultMetabolite);
-        return "metaboliteDetail";
+        try {
+            resultMetabolite = metaboliteService.listMetabolite(map,resultMetabolite);
+            request.setAttribute("resultMetabolite",resultMetabolite);
+            return "metaboliteDetail";
+        } catch (Exception e) {
+            request.setAttribute("resultMetabolite",resultMetabolite);
+            return "metaboliteDetailError";
+        }
     }
 
     @RequestMapping("listDrugs2.action")

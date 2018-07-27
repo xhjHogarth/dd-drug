@@ -1,19 +1,17 @@
 package com.xhj.dddrug.service.impl;
 
 import com.xhj.dddrug.dao.DataMapper;
-import com.xhj.dddrug.pojo.Drug;
-import com.xhj.dddrug.pojo.Enzyme;
-import com.xhj.dddrug.pojo.Metabolite;
-import com.xhj.dddrug.pojo.Protein;
+import com.xhj.dddrug.dao.DrugMapper;
+import com.xhj.dddrug.pojo.*;
 import com.xhj.dddrug.service.DataService;
-import com.xhj.dddrug.vo.DrugRefVo;
-import com.xhj.dddrug.vo.DrugVo;
-import com.xhj.dddrug.vo.EnzymeMetVo;
-import com.xhj.dddrug.vo.ProteinEnzymeVo;
+import com.xhj.dddrug.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: asus
@@ -26,6 +24,8 @@ public class DataServiceImpl implements DataService{
 
     @Autowired
     public DataMapper dataDao;
+    @Autowired
+    public DrugMapper drugDao;
 
     @Override
     public void enterDrug(Drug drug) {
@@ -110,6 +110,53 @@ public class DataServiceImpl implements DataService{
     @Override
     public void enterDrugRef(DrugRefVo drugRefVo) {
         dataDao.enterDrugRef(drugRefVo);
+    }
+
+    @Override
+    public void enterDrugMet(DrugMetVo drugMetVo) {
+        dataDao.enterDrugMet(drugMetVo);
+    }
+
+    @Override
+    public List<Drug> selectDrugs(Map<String, Object> map) {
+//        List<Drug> drugs = new ArrayList<>();
+//        drugs.addAll(dataDao.selectDrugs(map));
+//        drugs.addAll(dataDao.selectDrugsFromDrugAndMet(map));
+        return dataDao.selectDrugs(map);
+    }
+
+    @Override
+    public List<DrugMetVo> selectDrugMetVo(Drug drug) {
+        List<DrugMetVo> drugMetVo = new ArrayList<>();
+
+        List<Protein> data1 = new ArrayList<>();
+        //药物之间相关的相关蛋白
+        ResultDrug resultDrug = new ResultDrug();
+        resultDrug.setType(drug.getType());
+        resultDrug.setDrugName(drug.getDname());
+        resultDrug.setDrugBank(drug.getDrugbank());
+        data1 = drugDao.selectProteins(resultDrug);
+        Map<String,Object> map = new HashMap<>();//存通过药物直接查到的相关蛋白，和 type
+        map.put("type",drug.getType());
+        map.put("data",data1);
+        try {
+            //相关蛋白直接相关的酶
+            List<Enzyme> enzymeNames1 = drugDao.selectEnzymeByProteins(map);//通过所有的相关蛋白查到的直接有关系的所有酶
+            map.put("data",enzymeNames1);
+            //酶直接相关的代谢物
+            List<Metabolite> data = drugDao.selectMetabolites(map);
+            for(int i =0;i<data.size();i++){
+                DrugMetVo drugMetVo1 = new DrugMetVo();
+                drugMetVo1.setDname(drug.getDname());
+                drugMetVo1.setKc(data.get(i).getKc());
+                drugMetVo1.setDrugType(drug.getType());
+                drugMetVo1.setType("Predicted");
+                drugMetVo.add(drugMetVo1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return drugMetVo;
     }
 
 

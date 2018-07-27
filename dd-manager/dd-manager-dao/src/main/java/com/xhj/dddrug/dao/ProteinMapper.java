@@ -43,4 +43,6 @@ public interface ProteinMapper {
     public List<EnzymeMetVo> selectEnzymeMetabolite(Map<String, Object> map);
 
     public List<Metabolite> selectMetabolitesByPage(Map<String, Object> map);
+
+    public Protein selectProtein(Map<String, Object> map);
 }

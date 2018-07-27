@@ -35,4 +35,6 @@ public interface ProteinService {
     public Result<Metabolite> selectMetabolitesByPage(Map<String, Object> map);
 
     public Result<Link> listEdges(Map<String, Object> map);
+
+    public Protein selectProtein(String type, String gene_symbol);
 }

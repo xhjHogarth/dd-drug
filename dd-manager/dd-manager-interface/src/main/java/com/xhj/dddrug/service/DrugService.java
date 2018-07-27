@@ -3,14 +3,12 @@ package com.xhj.dddrug.service;
 import com.xhj.dddrug.dto.Order;
 import com.xhj.dddrug.dto.Page;
 import com.xhj.dddrug.dto.Result;
-import com.xhj.dddrug.pojo.Metabolite;
-import com.xhj.dddrug.pojo.Protein;
-import com.xhj.dddrug.pojo.Reference;
-import com.xhj.dddrug.pojo.ResultDrug;
+import com.xhj.dddrug.pojo.*;
 import com.xhj.dddrug.utils.Link;
 import com.xhj.dddrug.utils.Node;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: asus
@@ -37,4 +35,8 @@ public interface DrugService {
     public Result<Reference> listReferences(ResultDrug drug, Page page, Order order);
 
     public Result<Link> listEdges(ResultDrug drug,Page page);
+
+    public Result<Drug> drugBrowse(Map<String, Object> map);
+
+    public Result<Protein> listProteins(Map<String, Object> map);
 }

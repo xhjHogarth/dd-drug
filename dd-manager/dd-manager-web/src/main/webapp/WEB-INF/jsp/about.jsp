@@ -13,7 +13,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
         dt{
             font-size: 20px;
@@ -34,68 +34,67 @@
             <div class="col-md-12 column">
                 <dl>
                     <dt>
-                        Dabase statistics
+                        About HNepTox
+                    </dt>
+                    <hr>
+                        <p style="word-wrap: break-word;text-indent: 2em;">
+                            The Hepatotoxicity or Nephrotoxicity (HNepTox) database is an online platform that focuses on
+                            providing the related proteins and differential metabolites of drug-induced hepatotoxicity or
+                            nephrotoxicity. HNepTox currently collects the related proteins and metabolites of 180 drugs
+                            with known hepatotoxicity or 55 drugs with known nephrotoxicity. All the data in HNepTox is
+                            manually extracted from the related PubMed literatures. It is fully searchable by drug name,
+                            DrugBank ID, protein name, gene symbol, UniProtKB ID, Gene ID, metabolite name, HMDB ID or KEGG
+                            ID. The entire data in HNepTox may be freely downloadable. In HNepTox, a molecular network of
+                            drug-related protein-metabolic enzyme-metabolite may be represented based on the entered drug,
+                            related protein or metabolite. HNepTox allows you to submit the relevant uncollected data or
+                            valuable suggestions.
+                        </p>
+                    <dt>
+                        Database Statistics
                     </dt>
                     <hr>
                     <table class="table">
                         <thead>
                         <tr class="info">
-                            <th>Data type</th>
-                            <th>Drug(hepatotoxicity)</th>
-                            <th>Herb(hepatotoxicity)</th>
-                            <th>Drug(nephrotoxicity)</th>
-                            <th>Herb(nephrotoxicity)</th>
+                            <th>Toxicity Type</th>
+                            <th>Item</th>
+                            <th>Amount</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>Drug</td>
-                            <td>261</td>
+                            <td rowspan="4">Hepatotoxicity</td>
+                            <td>Medicine</td>
+                            <td>159</td>
+                        </tr>
+                        <tr>
+                            <td>Herb</td>
                             <td>21</td>
-                            <td>59</td>
+                        </tr>
+                        <tr>
+                            <td>Related Protein</td>
+                            <td>262</td>
+                        </tr>
+                        <tr>
+                            <td>Metabolite</td>
+                            <td>122</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4">Nephrotoxicity</td>
+                            <td>Medicine</td>
+                            <td>41</td>
+                        </tr>
+                        <tr>
+                            <td>Herb</td>
                             <td>14</td>
                         </tr>
                         <tr>
                             <td>Related Protein</td>
-                            <td>374</td>
-                            <td>31</td>
-                            <td>287</td>
-                            <td>29</td>
-                        </tr>
-                        <tr>
-                            <td>Enzyme</td>
-                            <td>440</td>
-                            <td>221</td>
-                            <td>437</td>
-                            <td>422</td>
+                            <td>145</td>
                         </tr>
                         <tr>
                             <td>Metabolite</td>
-                            <td>132</td>
-                            <td>47</td>
-                            <td>136</td>
-                            <td>132</td>
-                        </tr>
-                        <tr>
-                            <td>Drugs-related protein pairs</td>
-                            <td>978</td>
-                            <td>57</td>
-                            <td>394</td>
-                            <td>64</td>
-                        </tr>
-                        <tr>
-                            <td>Protein-protein pairs</td>
-                            <td>2102</td>
-                            <td>515</td>
-                            <td>2056</td>
-                            <td>1214</td>
-                        </tr>
-                        <tr>
-                            <td>Enzyme-metabolite pairs</td>
-                            <td>1641</td>
-                            <td>282</td>
-                            <td>868</td>
-                            <td>715</td>
+                            <td>113</td>
                         </tr>
                         </tbody>
                     </table>
@@ -104,10 +103,18 @@
                     </dt>
                     <hr>
                     <dd>
-                        School of Pharmaceutical Sciences, Wenzhou Medical University, Ouhai District, Wenzhou, Zhejiang Province, China.<br>
-                        E-mail address: appo@wmu.edu.cn<br>
-                        Tel: 86-0592-2182897<br>
-                        Website: http://bioinf.wmu.edu.cn<br>
+                        <ul style="word-wrap: break-word">
+                            <li>
+                                School of Pharmaceutical Sciences, Wenzhou Medical University, Ouhai District, Wenzhou, Zhejiang Province, China.
+                                <br>
+                                E-mail address: XZH007@126.com
+                            </li>
+                            <li>
+                                Institute for Precision Medicine and Innovative Drug, School of Chinese Medicine, Hong Kong Baptist University, Hong Kong, SAR, People’s Republic of China.
+                                <br>
+                                E-mail address: aipinglu@hkbu.edu.hk
+                            </li>
+                        </ul>
                     </dd>
                 </dl>
             </div>

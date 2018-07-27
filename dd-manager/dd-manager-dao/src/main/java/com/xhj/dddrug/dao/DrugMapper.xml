@@ -54,15 +54,17 @@
     <select id="selectEnzymeByProteins" parameterType="Map" resultType="com.xhj.dddrug.pojo.Enzyme">
         select DISTINCT * from enzyme where `type`=#{type} and del=1 and
         (
-            ename in
-                (
-                    select pname from protein_enzyme where pname_e in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
-                    and re_type=2 and `type`=#{type} and del=1
-                )
-          or ename in
+            <!--ename in-->
+                <!--(-->
+                    <!--select pname from protein_enzyme where pname_e in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)-->
+                    <!--and re_type=2 and `type`=#{type} and del=1-->
+                <!--)-->
+          <!--or -->
+        ename in
                 (select pname_e from protein_enzyme where pname in (<foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>)
                     and re_type=2 and `type`=#{type} and del=1
                 )
+
         )
     </select>
     <!--<select id="selectEnzymeByEnzyme" parameterType="List" resultType="String">-->
@@ -84,7 +86,7 @@
           <foreach collection="data" separator="," item="item">#{item.gene_symbol}</foreach>
         ) and re_type=1 and `type`=#{type} and del=1
     </select>
-    <select id="selectProteinAndEnzyme" parameterType="java.util.HashMap" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
+    <select id="selectProteinAndEnzyme" parameterType="Map" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">
         <!--select * from protein_enzyme where (pname in (-->
           <!--<foreach collection="proteins" separator="," item="protein">#{protein}</foreach>-->
         <!--) and pname_e in (-->
@@ -95,7 +97,8 @@
         <!--) and pname_e in (-->
           <!--<foreach collection="proteins" separator="," item="protein">#{protein}</foreach>-->
         <!--))-->
-        select DISTINCT * from protein_enzyme where `type`=#{type} and del=1 and re_type=2
+        select DISTINCT * from protein_enzyme where `type`=#{type} and del=1 and re_type=2 and
+        pname in (<foreach collection="data" item="item" separator=",">#{item.gene_symbol}</foreach>)
     </select>
     <!--<select id="selectEnzymeToEnzyme" parameterType="List" resultType="com.xhj.dddrug.vo.ProteinEnzymeVo">-->
         <!--select pname,pname_e from protein_enzyme where pname in (-->
@@ -145,5 +148,43 @@
             </otherwise>
         </choose>
         limit #{page.offset},#{page.rows}
+    </select>
+    <select id="drugBrowseAll" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,`type` from drugs where del=1 and `type`=#{type}
+    </select>
+    <select id="drugBrowseByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,`type` from drugs where del=1 and `type`=#{type}
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by did asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
+    </select>
+    <select id="listProteinsByPage" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select * from proteins where del=1 and `type`=#{type} and gene_symbol in
+        (select pname from drug_protein where dname=#{drugName} and `type`=#{type} and del=1)
+        <choose>
+            <when test="order != null and order.sort != null and order.order != null">
+                <foreach collection="order.orderParams" item="item" open="order by " close="" separator=",">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                order by pid asc
+            </otherwise>
+        </choose>
+        limit #{page.offset},#{page.rows}
+    </select>
+    <select id="countDrugMetabolite" parameterType="Map" resultType="int">
+        select count(*) from drug_metabolite_type where del=1 and drugType=#{type} and dname=#{drugName} and kc=#{kc}
+    </select>
+    <select id="selectType" parameterType="Map" resultType="String">
+        select type from drug_metabolite_type where del=1 and drugType=#{type} and dname=#{drugName} and kc=#{kc}
     </select>
 </mapper>

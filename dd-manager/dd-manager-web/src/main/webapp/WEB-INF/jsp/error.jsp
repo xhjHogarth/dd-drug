@@ -1,14 +1,14 @@
 <%--
   User: asus
-  Date: 2018/3/7
-  Time: 21:21
+  Date: 2018/4/23
+  Time: 10:47
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Error</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/writeData.action">写入数据</a>
+未到找
 </body>
 </html>

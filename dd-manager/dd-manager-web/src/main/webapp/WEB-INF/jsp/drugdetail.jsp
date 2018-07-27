@@ -14,7 +14,7 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
         a{
             color: #CF5A11;
@@ -34,12 +34,14 @@
 <body>
     <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto;">
-        <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png">
+        <img id="typeImg" style="display: inline;">
+        <h3 style="display: inline;margin-left: 150px;font-size: 25px;color: #C55A11;vertical-align: bottom">Search Result - ${resultDrug.drugName}</h3>
+        <hr>
     </div>
-    <table border="1px" align="center" style="margin-top: 2%;width: 600px">
+    <table border="1px" align="center" style="margin-top: 20px;width: 600px">
         <tr>
             <td align="center" width="100px" style="font-weight: bold">Drug Name</td>
-            <td width="300px"><a href="https://www.drugbank.ca/drugs/${resultDrug.drugBank}" style="margin-left: 50px">${resultDrug.drugName}</a></td>
+            <td width="300px">${resultDrug.drugBank}</td>
             <input type="hidden" value="${resultDrug.drugName}" id="drugName">
             <input type="hidden" value="${resultDrug.type}" id="type">
         </tr>
@@ -48,7 +50,7 @@
         </tr>
         <c:forEach items="${resultDrug.proteins}" var="protein" varStatus="vs1">
             <tr>
-                <td colspan="2" align="left">${vs1.index+1}.${protein.pname}</td>
+                <td colspan="2" style="text-align: left"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${protein.eg_id}">${vs1.index+1}.${protein.pname}</a></td>
             </tr>
         </c:forEach>
         <tr>
@@ -59,7 +61,7 @@
         </tr>
         <c:forEach items="${resultDrug.metabolites}" var="metabolite" varStatus="vs2">
             <tr>
-                <td colspan="2" align="left">${vs2.index+1}.${metabolite.mname}</td>
+                <td colspan="2" align="left"><a href="http://www.hmdb.ca/metabolites/${metabolite.hmdb}">${vs2.index+1}.${metabolite.mname}</a></td>
             </tr>
         </c:forEach>
         <tr>
@@ -71,7 +73,7 @@
         <tr>
             <td colspan="2">
                 <c:forEach items="${resultDrug.references}" var="reference" varStatus="vs3">
-                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=${reference}">${reference.pmid}</a>,
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=${reference.pmid}">${reference.pmid}</a>,
                 </c:forEach><a href="${pageContext.request.contextPath}/listReference.action?drugName=${resultDrug.drugName}&type=${resultDrug.type}">(more......)</a>
             </td>
         </tr>
@@ -83,5 +85,14 @@
     <div style="text-align: center;margin-top: 50px">
         <img src="${pageContext.request.contextPath}/images/bottom.png">
     </div>
+<script>
+    var type = $('#type').val();
+    if("hepatotoxicity" == type){
+        $('#typeImg').attr("src","images/Hepatotoxicity.png");
+    }
+    if("nephrotoxicity" == type){
+        $('#typeImg').attr("src","images/Nephrotoxicity.jpg");
+    }
+</script>
 </body>
 </html>

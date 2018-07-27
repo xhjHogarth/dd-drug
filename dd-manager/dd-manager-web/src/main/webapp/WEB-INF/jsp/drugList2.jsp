@@ -13,15 +13,15 @@
             text-decoration: none;
             font-size: 18px;
             color: white;
-            margin-left: 70px;
+            margin-left: 60px;
         }
     </style>
 </head>
 <body>
     <jsp:include page="top.jsp"/>
     <div style="width: 940px;margin: 0 auto">
-        <img src="${pageContext.request.contextPath}/images/Hepatotoxicity.png" style="display: inline">
-        <h3 style="display: inline;vertical-align: bottom;margin-left: 250px;font-size: 30px;color: #C55A11">Drugs</h3>
+        <img id="typeImg" style="display: inline">
+        <h3 style="display: inline;vertical-align: bottom;margin-left: 150px;font-size: 25px;color: #C55A11">Drugs - ${mname}</h3>
         <hr>
     </div>
     <div style="width:700px;height:auto;margin: 20px auto;">
@@ -48,11 +48,23 @@
             columns:[[
                 {field:'dname',title:'DrugName',width:300,sortable:true},
                 {field:'drugbank',title:'DrugBank',width:300,sortable:true}
-            ]]
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $(this).datagrid('unselectRow', rowIndex);
+            }
         });
     </script>
     <div style="text-align: center;margin-top: 50px">
         <img src="${pageContext.request.contextPath}/images/bottom.png">
     </div>
+    <script>
+        var type = $('#type').val();
+        if("hepatotoxicity" == type){
+            $('#typeImg').attr("src","images/Hepatotoxicity.png");
+        }
+        if("nephrotoxicity" == type){
+            $('#typeImg').attr("src","images/Nephrotoxicity.jpg");
+        }
+    </script>
 </body>
 </html>

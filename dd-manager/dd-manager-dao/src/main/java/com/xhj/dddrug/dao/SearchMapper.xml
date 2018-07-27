@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhj.dddrug.dao.SearchMapper">
+    <select id="selectDrugByDrugName" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,type from drugs where del=1 and type=#{type} and dname=#{drugName}
+    </select>
+    <select id="selectDrugByDrugbank" parameterType="Map" resultType="com.xhj.dddrug.pojo.Drug">
+        select dname,drugbank,type from drugs where del=1 and type=#{type} and drugbank=#{drugbank}
+    </select>
+    <select id="selectProteinByPname" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select pname,gene_symbol,eg_id,upkb,type from proteins where del=1 and type=#{type} and pname=#{pname}
+    </select>
+    <select id="selectProteinByGeneSymbol" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select pname,gene_symbol,eg_id,upkb,type from proteins where del=1 and type=#{type} and gene_symbol=#{gene_symbol}
+    </select>
+    <select id="selectProteinByGeneId" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select pname,gene_symbol,eg_id,upkb,type from proteins where del=1 and type=#{type} and eg_id=#{gene_id}
+    </select>
+    <select id="selectProteinByUpkb" parameterType="Map" resultType="com.xhj.dddrug.pojo.Protein">
+        select pname,gene_symbol,eg_id,upkb,type from proteins where del=1 and type=#{type} and upkb=#{upkb}
+    </select>
+    <select id="selectMetaboliteByMname" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select mname,hmdb,kc,type from metabolites where del=1 and type=#{type} and mname=#{mname}
+    </select>
+    <select id="selectMetaboliteByKc" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select mname,hmdb,kc,type from metabolites where del=1 and type=#{type} and kc=#{kc}
+    </select>
+    <select id="selectMetaboliteByHmdb" parameterType="Map" resultType="com.xhj.dddrug.pojo.Metabolite">
+        select mname,hmdb,kc,type from metabolites where del=1 and type=#{type} and hmdb=#{hmdb}
+    </select>
+</mapper>
